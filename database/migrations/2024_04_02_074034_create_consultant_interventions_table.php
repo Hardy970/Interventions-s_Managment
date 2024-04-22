@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\User;
 use App\Models\Consultant;
 use App\Models\Intervention;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,10 +14,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('consultant_interventions', function (Blueprint $table) {
+        Schema::create('user_intervention', function (Blueprint $table) {
             $table->foreignIdFor(Intervention::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Consultant::class)->constrained()->cascadeOnDelete();
-            $table->primary(['intervention_id','consultant_id']);
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->primary(['intervention_id','user_id']);
             $table->timestamps();
         });
     }
