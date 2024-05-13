@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Demandeur extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'nom',
+        'email',
+        'telephone',
+        'departement',
+        'poste',
+        'societe_id'
+    ];
+    public function societe(){
+        return $this->belongsTo(Societe::class);
+    }
 }

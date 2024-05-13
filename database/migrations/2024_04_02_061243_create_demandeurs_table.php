@@ -16,9 +16,9 @@ return new class extends Migration
             $table->id();
             $table->string('nom');
             $table->string('poste');
-            $table->integer('telephone');
-            $table->string('email');
-            $table->string('departement');
+            $table->integer('telephone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('departement')->nullable();
             $table->foreignIdFor(Societe::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

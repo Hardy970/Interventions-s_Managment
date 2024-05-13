@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Equipe;
+use App\Models\Role;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -17,9 +18,9 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('role')->default('user');
-            $table->foreignIdFor(Equipe::class)->constrained()->cascadeOnDelete();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->foreignIdFor(Role::class);
+            $table->boolean('actived')->default(true);
+            $table->foreignIdFor(Equipe::class)->nullable()->constrained()->cascadeOnDelete();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
