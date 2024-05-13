@@ -44,19 +44,36 @@
                               {{ $consultant->first_name }} {{ $consultant->last_name }}
                             </td>
                             <td>
-                              {{ $consultant->equipe->nom }}
+                              @if( !empty($consultant->equipe) )
+                              {{ 
+                                $consultant->equipe->nom
+                                }}
+                              @endif
                             </td>
                             <td>
-                              {{ $consultant->role }}
+                              {{ $consultant->role->libelle }}
                             </td>
                             <td class=" d-flex gap-1">
                               {{-- <a class="btn btn-danger btn-xs" type="button" href="{{ route('admin.consultant.destroy',['consultant'=>$consultant->id]) }}" data-original-title="btn btn-danger btn-xs" title="">Delete</a> --}}
                               <form action="{{ route('admin.consultant.destroy',['consultant'=>$consultant->id]) }}" method="POST"> 
                                 @csrf
                                 @method('delete')
-                                <button type="button" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce consultant ?")' title="">Supprimer</button>
-                            </form>
+                                <button type="submit" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce consultant ?")' title="">Supprimer</button>
+                              </form>
                               <a class="btn btn-primary btn-xs" href="{{ route('admin.consultant.edit',['consultant'=>$consultant]) }}"  data-original-title="btn btn-danger btn-xs" title="">Modifier</a>
+                              @if($consultant->actived)
+                              <form action="{{ route('admin.consultant.block',['consultant'=>$consultant->id]) }}" method="POST"> 
+                                @csrf
+                                @method('put')
+                                <button type="submit" style="font-size: 0.71rem" class="btn btn-warning btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir bloquer ce consultant ?")' title="">Bloquer</button>
+                              </form>                              
+                              @else
+                              <form action="{{ route('admin.consultant.unblock',['consultant'=>$consultant->id]) }}" method="POST"> 
+                                @csrf
+                                @method('put')
+                                <button type="submit" style="font-size: 0.71rem" class="btn btn-success btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir débloquer ce consultant ?")' title="">Activer</button>
+                              </form>
+                              @endif
                             </td>
                           </tr>
                           @endforeach

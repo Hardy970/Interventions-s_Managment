@@ -21,8 +21,18 @@ class CategorieRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('categorie') ? $this->route('categorie')->id : null;
         return [
-            'libelle'=>['required','string']
+            'libelle'=>['required','string','unique:categories,libelle,'.$id]
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'libelle.required' => 'Ce champ est requis.',
+            'libelle.unique' => 'Cette catégorie existe déjà',
+
+        ];
+    }
+
 }

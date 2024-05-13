@@ -38,4 +38,4 @@
       <script src="{{ asset('assets/js/product-list-custom.js') }}"></script>
       <script src="{{ asset('assets/js/ecommerce.js') }}"></script>
 
-      <script src="{{ asset('assets/js/sidebar-menu.js')}}"></script>
+      <script src="{{ asset('assets/js/sidebar-menu.js')}}"></script>      

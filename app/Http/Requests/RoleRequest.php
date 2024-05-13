@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ConsultantRequest extends FormRequest
+class RoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +21,17 @@ class ConsultantRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('role') ? $this->route('role')->id : null;
         return [
-            'first_name',
-            'last_name',
-            'email',
-            'password',
-            'equipe_id'
+            'libelle'=>['required','string','unique:roles,libelle,'.$id]
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'libelle.required' => 'Ce champ est requis.',
+            'libelle.unique' => 'Ce rôle existe déjà',
+
         ];
     }
 }

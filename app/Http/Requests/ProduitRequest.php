@@ -21,9 +21,19 @@ class ProduitRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('produit') ? $this->route('produit')->id : null;
         return [
-            'libelle'=>['required','string'],
+            'libelle'=>['required','string','unique:produits,libelle,'.$id],
             'categorie_id'=>['required','exists:categories,id']
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'libelle.required' => 'Ce champ est requis.',
+            'categorie_id.required' => 'Ce champ est requis.',
+            'libelle.unique' => 'Ce produit existe déjà',
+
         ];
     }
 }

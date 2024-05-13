@@ -9,7 +9,7 @@
           <li>
             <form class="form-inline search-form">
               <div class="search-bg"><i class="fa fa-search"></i>
-                <input class="form-control-plaintext" placeholder="Search here.....">
+                <input class="form-control-plaintext" placeholder="Rechercher ici.....">
               </div>
             </form><span class="d-sm-none mobile-search search-bg"><i class="fa fa-search"></i></span>
           </li>
@@ -59,7 +59,7 @@
           </li>
           <form action="{{ route('logout') }}" method="POST" >
               @csrf
-              <button class="btn btn-primary-light" type="submit"><li class="onhover-dropdown p-0"><i data-feather="log-out"></i>Log out</li></button>
+              <button class="btn btn-primary-light" type="submit"><li class="onhover-dropdown p-0"><i data-feather="log-out"></i>Se déconnecter</li></button>
         </form>
         </ul>
       </div>

@@ -46,7 +46,7 @@
                               <form action="{{ route('admin.produit.destroy',['produit'=>$produit->id]) }}" method="POST"> 
                                 @csrf
                                 @method('delete')
-                                <button type="button" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce produit ?")' title="">Supprimer</button>
+                                <button type="submit" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce produit ?")' title="">Supprimer</button>
                             </form>
                               <a class="btn btn-primary btn-xs" href="{{ route('admin.produit.edit',['produit'=>$produit]) }}"  data-original-title="btn btn-danger btn-xs" title="">Modifier</a>
                             </td>

@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title','Consultant')
+@section('title','intervention')
 
 @section('content')
           <!-- Container-fluid starts-->
@@ -10,9 +10,9 @@
               <div class="col-sm-12">
                 <div class="card">
                   <div class="card-header pb-0">
-                    <h5>Liste des consultants</h5>
+                    <h5>Liste des interventions</h5>
                     <div class="form-group text-end mb-5">
-                      <a class="btn btn-primary btn-block " type="button" href="{{ route('admin.consultant.create') }}" >Ajouter un consultant</a>
+                      <a class="btn btn-primary btn-block " type="button" href="{{ route('admin.interventions.create') }}" >Ajouter une intervention</a>
                     </div>
                     
                     
@@ -27,36 +27,76 @@
                       <table class="display" id="basic-1">
                         <thead>
                           <tr>
-                            <th>Email</th>
-                            <th>Nom et Prénoms</th>
-                            <th>Equipe</th>
-                            <th>Rôle</th>
+                            <th>Date de demande</th>
+                            <th>Types de demande</th>
+                            <th>Société</th>
+                            <th>Fait générateur</th>
+                            <th>Feedback du client</th>
+                            <th>Consultants</th>
+                            <th>Produits concernés</th>
+                            <th>Type d'intervention</th>
+                            <th>Véhicule utilisé</th>
+                            <th>Nom du chauffeur</th>
+                            <th>Travaux réalisés</th>
+                            <th>Statut facturation</th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                          @foreach ( $consultants as $consultant )
+                          @foreach ( $interventions as $intervention )
                           <tr>
                             <td>
-                              {{ $consultant->email }}
+                              {{ $intervention->date_demande }}
                             </td>
                             <td >
-                              {{ $consultant->first_name }} {{ $consultant->last_name }}
+                              @foreach ($intervention->typesdemandes as $typedemande )
+                                {{ $typedemande->libelle }}
+                              @endforeach
                             </td>
                             <td>
-                              {{ $consultant->equipe->nom }}
+                              {{ $intervention->demandeur->societe->nom }}
                             </td>
                             <td>
-                              {{ $consultant->role }}
+                              {{ $intervention->faitgenerateur->libelle }}
+                            </td>
+                            <td>
+                              {{ $intervention->feedback }}
+                            </td>
+                            <td>
+                              @foreach ($intervention->consultants as $consultant )
+                              {{ $consultant->last_name }} {{ $consultant->first_name }} 
+                              @endforeach
+                            </td>
+                            <td>
+                              @foreach ($intervention->produits as $produit )
+                              {{ $produit->libelle }}
+                              @endforeach
+                            </td>
+                            <td>
+                              @foreach ($intervention->typesinterventions as $typesintervention )
+                              {{ $typesintervention->libelle }} 
+                              @endforeach
+                            </td>
+                            <td>
+                              {{ $intervention->vehicule->matricule }}
+                            </td>
+                            <td>
+                              {{ $intervention->chauffeur->nom }}
+                            </td>
+                            <td>
+                              {{ $intervention->travaux }}
+                            </td>
+                            <td>
+                              {{ $intervention->statut_fact?'Payé':'Non payé' }}
                             </td>
                             <td class=" d-flex gap-1">
-                              {{-- <a class="btn btn-danger btn-xs" type="button" href="{{ route('admin.consultant.destroy',['consultant'=>$consultant->id]) }}" data-original-title="btn btn-danger btn-xs" title="">Delete</a> --}}
-                              <form action="{{ route('admin.consultant.destroy',['consultant'=>$consultant->id]) }}" method="POST"> 
+                              {{-- <a class="btn btn-danger btn-xs" type="button" href="{{ route('admin.intervention.destroy',['intervention'=>$intervention->id]) }}" data-original-title="btn btn-danger btn-xs" title="">Delete</a> --}}
+                              <form action="{{ route('admin.interventions.destroy',['intervention'=>$intervention->id]) }}" method="POST"> 
                                 @csrf
                                 @method('delete')
-                                <button type="button" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce consultant ?")' title="">Supprimer</button>
+                                <button type="submit" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce intervention ?")' title="">Supprimer</button>
                             </form>
-                              <a class="btn btn-primary btn-xs" href="{{ route('admin.consultant.edit',['consultant'=>$consultant]) }}"  data-original-title="btn btn-danger btn-xs" title="">Modifier</a>
+                              <a class="btn btn-primary btn-xs" href="{{ route('admin.interventions.edit',['intervention'=>$intervention]) }}"  data-original-title="btn btn-danger btn-xs" title="">Modifier</a>
                             </td>
                           </tr>
                           @endforeach

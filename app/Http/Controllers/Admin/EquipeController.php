@@ -31,10 +31,17 @@ class EquipeController extends Controller
     {
         $request->validate([
             'nom'=>['string','unique:equipes,nom']
-        ]);
+        ], $this->messages());
         Equipe::create($request->all());
 
         return redirect()->route('admin.equipe.index')->with('success','Equipe créée avec succès');
+    }
+    public function messages()
+    {
+        return [
+            'nom.string' => 'Le nom de l\'équipe doit être une chaîne de caractères.',
+            'nom.unique' => 'Ce nom d\'équipe est déjà utilisé.',
+        ];
     }
 
     /**
@@ -56,7 +63,7 @@ class EquipeController extends Controller
     public function update(Request $request, Equipe $equipe)
     {
         $request->validate([
-            'nom'=>['string','unique:equipes,nom']
+            'nom'=>['string','unique:equipes,nom,'.$equipe->id.'id']
         ]);
         $equipe->update(($request->all()));
 

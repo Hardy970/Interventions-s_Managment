@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Intervention;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class InterventionController extends Controller
 {
@@ -12,7 +13,8 @@ class InterventionController extends Controller
      */
     public function index()
     {
-        //
+
+        return view('admin.intervention.index',['interventions'=> Intervention::all()]);
     }
 
     /**

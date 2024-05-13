@@ -21,8 +21,16 @@ class FaitGenerateurRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('faitgenerateur') ? $this->route('faitgenerateur')->id : null;
         return [
-            'libelle'=>['required','string']
+            'libelle'=>['required','string','unique:fait_generateurs,libelle,'.$id]
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'libelle.required' => 'Ce champ est requis.',
+            'libelle.unique' => 'Ce fait générateur existe déjà',
         ];
     }
 }

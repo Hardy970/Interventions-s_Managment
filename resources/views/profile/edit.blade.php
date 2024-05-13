@@ -50,6 +50,25 @@
 <form class="" method="POST" action=" {{ route('password.update') }}" >
     @csrf
     @method('put')
+    @if($errors->updatePassword->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->updatePassword->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    @if (session('status') === 'password-updated')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 3000)"
+                    class=" alert alert-success  "
+                >{{ __('Enregistré.') }}</p>
+        @endif
 
     <div class="form-group">
         <label>Mot de passe actuel</label>
@@ -57,7 +76,9 @@
           <input class="form-control" type="password" required  name="current_password" >
         </div>
         @error('current_password')
-          {{ $message }}
+          <div class=" text-bg-danger  text-danger ">
+            {{ $message }}
+          </div>
         @enderror
       </div>
 
@@ -67,7 +88,9 @@
           <input class="form-control" type="password" required   name="password" >
         </div>
         @error('password')
+        <div class=" text-bg-danger  text-danger ">
           {{ $message }}
+        </div>
         @enderror
       </div>
 
@@ -77,21 +100,15 @@
           <input class="form-control" type="password" required   name="password_confirmation" >
         </div>
         @error('password_confirmation')
+        <div class=" text-bg-danger  text-danger ">
           {{ $message }}
+        </div>
         @enderror
       </div>
     
     <div class="form-group">
       <button class="btn btn-primary btn-block" type="submit">Enregistrer</button>
-      @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
-            @endif
+      
     </div>
     
   </form>
@@ -111,7 +128,7 @@
                           <div class="col-sm-6 col-md-12">
                             <div class="mb-3">
                               <label class="form-label">Email </label>
-                              <input class="form-control" type="email" name="email" value="{{ old('email',Auth::user()->email) }}" >
+                              <input class="form-control" type="email" name="email" disabled value="{{ old('email',Auth::user()->email) }}" >
                               @error('email')
                                   {{ $message }}
                               @enderror

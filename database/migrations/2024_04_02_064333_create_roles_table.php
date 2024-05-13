@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('interventions', function (Blueprint $table) {
-            $table->string('status')->default('Non commencée');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('libelle');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('interventions', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        Schema::dropIfExists('roles');
     }
 };

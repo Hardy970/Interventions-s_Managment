@@ -7,19 +7,21 @@
   @csrf
   <h4>Se connecter</h4>
   {{-- <h6>Welcome back! Log in to your account.</h6> --}}
-  <div class="form-group">
+    <div class="form-group">
       <label>Email </label>
       <div class="input-group"><span class="input-group-text"><i class="icon-email"></i></span>
-        <input class="form-control" type="email" required="" value="{{ old('email') }}" placeholder="Test@gmail.com" name="email" >
+        <input class="form-control" type="email" required="" value="{{ old('email') }}"  name="email" >
       </div>
       @error('email')
-        {{ $message }}
+      <div>
+        <span class="text-danger fw-bold "> {{ $message }} </span>
+      </div>
       @enderror
     </div>
     <div class="form-group">
       <label>Password</label>
       <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
-        <input class="form-control" type="password" name="password" required="" placeholder="*********">
+        <input class="form-control" type="password" name="password" required="" >
         <div class="show-hide"><span class="show">                         </span></div>
       </div>
     </div>

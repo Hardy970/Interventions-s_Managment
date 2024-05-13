@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\TypeDemandeController;
 use App\Http\Controllers\Admin\InterventionController;
 use App\Http\Controllers\Admin\FaitGenerateurController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TypeInterventionController;
 
 Route::get('/', function () {
@@ -25,6 +26,8 @@ Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function(){
         return view('pages.dashboard');
     })->name('dashboard');
     Route::resource('consultant', ConsultantController::class)->except('show');
+    Route::put('consultant/{consultant}/block',[ConsultantController::class,'block'])->name('consultant.block');
+    Route::put('consultant/{consultant}/unblock',[ConsultantController::class,'unblock'])->name('consultant.unblock');
     Route::resource('equipe', EquipeController::class)->except('show');
     Route::resource('societe', SocieteController::class)->except('show');
     Route::resource('demandeur', DemandeurController::class)->except('show');
@@ -32,10 +35,12 @@ Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function(){
     Route::resource('produit', ProduitController::class)->except('show');
     Route::resource('chauffeur', ChauffeurController::class)->except('show');
     Route::resource('faitgenerateur', FaitGenerateurController::class)->except('show');
-    Route::resource('intervention', InterventionController::class)->except('show');
+    Route::resource('interventions', InterventionController::class)->except('show');
     Route::resource('typedemande', TypeDemandeController::class)->except('show');
     Route::resource('typeintervention', TypeInterventionController::class)->except('show');
     Route::resource('vehicule', VehiculeController::class)->except('show');
+    Route::resource('role', RoleController::class)->except('show');
+
 
 
 });

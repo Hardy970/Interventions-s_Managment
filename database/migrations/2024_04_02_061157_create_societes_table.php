@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('societes', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
-            $table->integer('telephone');
-            $table->string('email');
-            $table->string('localite');
+            $table->integer('telephone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('localite')->nullable();
             $table->timestamps();
         });
     }

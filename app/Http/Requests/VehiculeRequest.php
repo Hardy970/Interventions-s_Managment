@@ -21,9 +21,19 @@ class VehiculeRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('vehicule') ? $this->route('vehicule')->id : null;
         return [
-            'matricule'=>['required','string'],
+            'matricule'=>['required','string','unique:vehicules,matricule,'.$id],
             'marque'=>['required','string']
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'matricule.required' => 'Ce champ est requis.',
+            'marque.required' => 'Ce champ est requis.',
+            'matricule.unique' => 'Ce matricule est déjà utilisé',
+
         ];
     }
 }

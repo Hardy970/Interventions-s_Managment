@@ -1,4 +1,4 @@
-@extends('authLayout')
+@extends('layout')
 
 @section('title','categorie')
 
@@ -9,10 +9,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{{ $categorie->exists?'Modifier une categorie':'Ajouter une categorie' }}</h5>
-          <button class="btn-close" onclick="history.back()"  aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="form-bookmark needs-validation" id="bookmark-form" method="POST" action=" {{ !$categorie->exists?route('admin.categorie.store'):route('admin.categorie.update',['categorie'=>$categorie ])}}" >
+          <form class=" needs-validation" id="bookmark-form" method="POST" action=" {{ !$categorie->exists?route('admin.categorie.store'):route('admin.categorie.update',['categorie'=>$categorie ])}}" >
             @csrf
             @method($categorie->exists?'PUT':'POST')
             <div class="row g-2">
@@ -20,19 +19,21 @@
                 <div class="row">
                   <div class="col-sm-8">
                     <label>Libellé de la categorie</label>
-                    <input class="form-control" id="con-name" type="text" required  value="{{ old('libelle',$categorie->libelle) }}"  name="libelle" >
+                    <input class="form-control" id="con-name" type="text"   value="{{ old('libelle',$categorie->libelle) }}"  name="libelle" >
                     @error('libelle')
-                        {{ $message }}
+                    <div>
+                      <span class="text-danger fw-bold "> {{ $message }} </span>
+                    </div>
                     @enderror
                   </div>
                 </div>
               </div>
             </div>
-            <button class="btn btn-secondary" type="submit">{{ $categorie->exists?'Modifier':'Ajouter' }}</button>
-            <button class="btn btn-primary" type="button"  onclick="history.back()" >Quitter</button>
+            <button class="btn btn-success" type="submit">{{ $categorie->exists?'Modifier':'Ajouter' }}</button>
+            <a class="btn btn-danger "  href="{{ route('admin.categorie.index') }}" >Quitter</a>
           </form>
         </div>
       </div>
     </div>
   </div>
-
+@endsection

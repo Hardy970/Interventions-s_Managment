@@ -36,8 +36,12 @@
                             <td >
                               {{ $equipe->nom }}
                             </td>
-                            <td>
-                              <a class="btn btn-danger btn-xs" type="button" href="{{ route('admin.equipe.destroy',['equipe'=>$equipe->id]) }}" data-original-title="btn btn-danger btn-xs" title="">Delete</a>
+                            <td class=" d-flex gap-1">
+                              <form action="{{ route('admin.equipe.destroy',['equipe'=>$equipe->id]) }}" method="POST"> 
+                                @csrf
+                                @method('delete')
+                                <button type="submit" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer cette équipe ?")' title="">Supprimer</button>
+                              </form>
                               <a class="btn btn-primary btn-xs" href="{{ route('admin.equipe.edit',['equipe'=>$equipe->id]) }}" type="button" data-original-title="btn btn-danger btn-xs" title="">Edit</a>
                             </td>
                           </tr>

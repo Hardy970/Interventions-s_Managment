@@ -1,9 +1,9 @@
 <header class="main-nav">
-    <div class="sidebar-user text-center"><img class="img-90 rounded-circle" src="../assets/images/dashboard/1.png" alt="">
+    <div class="sidebar-user text-center"><img class="img-90 rounded-circle" src="{{ asset('assets/images/dashboard/1.png') }}" alt="">
       <a href="{{ route('profile.edit') }}">
         <h6 class="mt-3 f-14 f-w-600">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6>
       </a>
-      <p class="mb-0 font-roboto">{{ strtoupper( Auth::user()->role )}} </p>
+      <p class="mb-0 font-roboto">{{ strtoupper( Auth::user()->role->libelle )}} </p>
      
     </div>
     <nav>
@@ -19,9 +19,9 @@
           @endphp
             
             <li class="dropdown"><a  @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'dashboard')]) href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span>Tableau de bord</span></a></li>
-            <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'intervention')]) href="{{ route('admin.intervention.index') }}"><span>Interventions</span></a></li>
-            <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'consultant')]) href="{{ route('admin.consultant.index') }}"><i data-feather="users"></i><span>Consultants</span></a></li>
-            <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'equipe')]) href="{{ route('admin.equipe.index') }}"><i data-feather="users"></i><span>Equipes</span></a></li>
+            <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'interventions')]) href="{{ route('admin.interventions.index') }}"><span>Interventions</span></a></li>
+            <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'consultant')]) href="{{ route('admin.consultant.index') }}"><span>Consultants</span></a></li>
+            <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'equipe')]) href="{{ route('admin.equipe.index') }}"><span>Equipes</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'societe')]) href="{{ route('admin.societe.index') }}"><span>Sociétés</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'demandeur')]) href="{{ route('admin.demandeur.index') }}"><span>Demandeurs</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'categorie')]) href="{{ route('admin.categorie.index') }}"><span>Catégories</span></a></li>
@@ -31,6 +31,7 @@
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'typedemande')]) href="{{ route('admin.typedemande.index') }}"><span>Types de demande</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'typeintervention')]) href="{{ route('admin.typeintervention.index') }}"><span>Types d'intervention</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'vehicule')]) href="{{ route('admin.vehicule.index') }}"><span>Véhicules</span></a></li>
+            <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'role')]) href="{{ route('admin.role.index') }}"><span>Rôles</span></a></li>
 
 
 

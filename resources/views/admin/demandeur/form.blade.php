@@ -1,4 +1,4 @@
-@extends('authLayout')
+@extends('layout')
 
 @section('title','demandeur')
 
@@ -9,27 +9,30 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{{ $demandeur->exists?'Modifier un demandeur':'Ajouter un demandeur' }}</h5>
-          <button class="btn-close" onclick="history.back()"  aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="form-bookmark needs-validation" id="bookmark-form" method="POST" action=" {{ !$demandeur->exists?route('admin.demandeur.store'):route('admin.demandeur.update',['demandeur'=>$demandeur ])}}" >
+          <form class=" needs-validation" id="bookmark-form" method="POST" action=" {{ !$demandeur->exists?route('admin.demandeur.store'):route('admin.demandeur.update',['demandeur'=>$demandeur ])}}" >
             @csrf
             @method($demandeur->exists?'PUT':'POST')
             <div class="row g-2">
               <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
                   <div class="col-sm-6">
-                    <label>Nom du demandeur</label>
-                    <input class="form-control" id="con-name" type="text" required placeholder="Prénoms"  value="{{ old('nom',$demandeur->nom) }}"  name="nom" >
+                    <label>Nom complet du demandeur</label>
+                    <input class="form-control" id="con-name" type="text"   value="{{ old('nom',$demandeur->nom) }}"  name="nom" >
                     @error('nom')
-                        {{ $message }}
+                    <div>
+                      <span class="text-danger fw-bold "> {{ $message }} </span>
+                    </div>
                     @enderror
                   </div>
                   <div class="col-sm-6">   
                     <label>Poste</label>
-                    <input class="form-control" id="con-last" type="text" required=""   value="{{ old('poste',$demandeur->poste) }}"  name="poste">
+                    <input class="form-control" id="con-last" type="text"    value="{{ old('poste',$demandeur->poste) }}"  name="poste">
                     @error('poste')
-                    {{ $message }}
+                    <div>
+                      <span class="text-danger fw-bold "> {{ $message }} </span>
+                    </div>
                   @enderror
                   </div>
                 </div>
@@ -40,10 +43,12 @@
                         <div class="form-group">
                             <label>Département</label>
                             <div class="input-group">
-                                <input class="form-control" type="text" required  name="departement" value="{{ old('departement',$demandeur->departement) }}">
+                                <input class="form-control" type="text"   name="departement" value="{{ old('departement',$demandeur->departement) }}">
                             </div>
                          @error('departement')
-                          {{ $message }}
+                         <div>
+                          <span class="text-danger fw-bold "> {{ $message }} </span>
+                        </div>
                          @enderror
                         </div>
                   </div>
@@ -59,7 +64,9 @@
                         </select>
                       </div>
                       @error('societe_id')
-                        {{ $message }}
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
                       @enderror
                     </div>
                     
@@ -70,24 +77,28 @@
                 <div class="row">
                   <div class="col-sm-6">
                       <label for="con-mail">Email </label>
-                      <input class="form-control" id="con-mail" type="email" required="" value="{{ old('email',$demandeur->email) }}"  name="email" >
+                      <input class="form-control" id="con-mail" type="email"  value="{{ old('email',$demandeur->email) }}"  name="email" >
                       @error('email')
-                        {{ $message }}
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
                       @enderror
                   </div>
                   <div class="col-sm-6">
                     <label for="con-mail">Téléphone </label>
-                    <input class="form-control" id="con-mail" type="number" required="" value="{{ old('telephone',$demandeur->telephone) }}"  name="telephone" >
+                    <input class="form-control" id="con-mail" type="number"  value="{{ old('telephone',$demandeur->telephone) }}"  name="telephone" >
                     @error('telephone')
-                      {{ $message }}
+                    <div>
+                      <span class="text-danger fw-bold "> {{ $message }} </span>
+                    </div>
                     @enderror
                   </div>
                 </div>
               </div>
               
             </div>
-            <button class="btn btn-secondary" type="submit">{{ $demandeur->exists?'Modifier':'Ajouter' }}</button>
-            <button class="btn btn-primary" type="button"  onclick="history.back()" >Quitter</button>
+            <button class="btn btn-success" type="submit">{{ $demandeur->exists?'Modifier':'Ajouter' }}</button>
+            <a class="btn btn-danger" href="{{ route('admin.demandeur.index') }}" >Quitter</a>
           </form>
         </div>
       </div>

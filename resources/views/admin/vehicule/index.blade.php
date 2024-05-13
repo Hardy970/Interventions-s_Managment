@@ -46,8 +46,8 @@
                               <form action="{{ route('admin.vehicule.destroy',['vehicule'=>$vehicule->id]) }}" method="POST"> 
                                 @csrf
                                 @method('delete')
-                                <button type="button" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce vehicule ?")' title="">Supprimer</button>
-                            </form>
+                                <button type="submit" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce vehicule ?")' title="">Supprimer</button>
+                              </form>
                               <a class="btn btn-primary btn-xs" href="{{ route('admin.vehicule.edit',['vehicule'=>$vehicule]) }}"  data-original-title="btn btn-danger btn-xs" title="">Modifier</a>
                             </td>
                           </tr>

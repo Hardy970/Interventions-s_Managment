@@ -21,8 +21,17 @@ class TypeInterventionRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('typeintervention') ? $this->route('typeintervention')->id : null;
         return [
-            'libelle'=>['required','string']
+            'libelle'=>['required','string','unique:type_interventions,libelle,'.$id]
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'libelle.required' => 'Ce champ est requis.',
+            'libelle.unique' => 'Ce type d\'intervention existe déjà',
+
         ];
     }
 }

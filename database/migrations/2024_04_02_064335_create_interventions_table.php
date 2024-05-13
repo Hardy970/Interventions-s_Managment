@@ -17,17 +17,18 @@ return new class extends Migration
     {
         Schema::create('interventions', function (Blueprint $table) {
             $table->id();
-            $table->string('feedback');
+            $table->string('feedback')->nullable();
             $table->date('date_demande');
             $table->date('date_debut');
-            $table->date('date_fin');
+            $table->date('date_fin')->nullable();
             $table->time('h_depart_b');
             $table->time('h_arrivee_b');
-            $table->time('h_arrivee_c');
-            $table->time('h_depart_c');
-            $table->string('travaux');
-            $table->boolean('statut_fact');
-            $table->boolean('est_vehicule_service');
+            $table->time('h_arrivee_c')->nullable();
+            $table->time('h_depart_c')->nullable();
+            $table->string('travaux')->nullable();
+            $table->boolean('statut_fact')->nullable();
+            $table->boolean('est_vehicule_service')->nullable();
+            $table->string('status')->default('Non commencée');
             $table->foreignIdFor(FaitGenerateur::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Vehicule::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Demandeur::class)->constrained()->cascadeOnDelete();

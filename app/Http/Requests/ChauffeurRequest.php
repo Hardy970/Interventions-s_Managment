@@ -21,8 +21,17 @@ class ChauffeurRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('chauffeur') ? $this->route('chauffeur')->id : null;
         return [
-            'nom'=>['required','string']
+            'nom'=>['required','string','unique:chauffeurs,nom,'.$id]
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'nom.required' => 'Ce champ est requis.',
+            'nom.unique' => 'Ce nom de chauffeur existe déjà',
+
         ];
     }
 }

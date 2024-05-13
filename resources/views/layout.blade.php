@@ -10,11 +10,14 @@
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <title>Intervention's - @yield('title')</title>
+
     @include('partials.head')
     @vite( [
           'resources/css/app.css',
           'resources/js/app.js',
       ])
+      <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+      <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
   </head>
   <body>
     <!-- Loader starts-->
@@ -47,7 +50,20 @@
     <!-- login js-->
     <!-- Plugin used-->
 
+    <script>
+      // new TomSelect('select')
+//       document.addEventListener('DOMContentLoaded', function() {
+//     // Sélection de tous les éléments <select> dans le document
+//     const selects = document.querySelectorAll('select');
 
+//     // Initialisation de TomSelect pour chaque élément <select>
+//     selects.forEach(function(select) {
+//         new TomSelect(select);
+//     });
+// })
+new TomSelect('select[multiple]',{plugins:{remove_button:{title:'Supprimer'}}})
+
+    </script>
     
   </body>
 </html>

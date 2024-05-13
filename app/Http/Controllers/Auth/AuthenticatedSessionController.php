@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,7 +30,15 @@ class AuthenticatedSessionController extends Controller
         
         $request->authenticate();
 
+
         $request->session()->regenerate();
+        $user = Auth::user();
+            if (!$user->actived) {
+                Auth::logout(); // Déconnecter l'utilisateur s'il n'est pas actif
+                throw ValidationException::withMessages([
+                    'email' =>"Compte désactivé",
+                ]);
+            }
 
         return redirect()->intended(route('admin.dashboard', absolute: false));
     }

@@ -21,4 +21,14 @@ class ProfileUpdateRequest extends FormRequest
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'last_name.required' => 'Ce champ est requis.',
+            'first_name.required' => 'Ce champ est requis.',
+            'email.required' => 'Ce champ est requis.',
+            'email.unique' => 'Cette adresse email est déjà utilisée',
+
+        ];
+    }
 }

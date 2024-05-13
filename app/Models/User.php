@@ -22,12 +22,17 @@ class User extends Authenticatable
         'email',
         'password',
         'equipe_id',
-        'role'
+        'role_id',
+        'actived'
     ];
     
     public function equipe()
     {
         return $this->belongsTo(Equipe::class);
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     /**

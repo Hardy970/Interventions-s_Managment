@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SocieteRequest;
 use App\Models\Societe;
 use Illuminate\Http\Request;
 
@@ -27,23 +28,10 @@ class SocieteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SocieteRequest $request)
     {
-        $request->validate([
-            'nom' => ['required', 'string', 'max:255'],
-            'telephone' => ['required', 'integer'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Societe::class],
-            'localite' => ['nullable', 'string', 'max:255'],
-
-        ]);
-
-        Societe::create([
-            'nom' => $request->nom,
-            'telephone' => $request->telephone,
-            'email' => $request->email,
-            'localite'=>$request->localite,
-        ]);
-        return redirect()->route('admin.societe.index')->with('success','Societe ajoutée avec succès');
+        Societe::create($request->validated());
+        return redirect()->route('admin.societe.index')->with('success','Société ajoutée avec succès');
     }
 
     /**
@@ -62,16 +50,10 @@ class SocieteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Societe $societe)
+    public function update(SocieteRequest $request, Societe $societe)
     {
-        $request->validate([
-            'nom' => ['required', 'string', 'max:255'],
-            'telephone' => ['required', 'integer'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Societe::class],
-            'localite' => ['nullable', 'string', 'max:255'],
-        ]);
-        $societe->update($request->all());
-        return redirect()->route('admin.societe.index')->with('success','societe mis à jour avec succès');
+        $societe->update($request->validated());
+        return redirect()->route('admin.societe.index')->with('success','Société mis à jour avec succès');
     }
 
     /**
@@ -80,6 +62,6 @@ class SocieteController extends Controller
     public function destroy(Societe $societe)
     {
         $societe->delete();
-        return redirect()->route('admin.societe.index')->with('success','societe supprimé avec succès');
+        return redirect()->route('admin.societe.index')->with('success','Société supprimée avec succès');
     }
 }

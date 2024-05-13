@@ -26,7 +26,6 @@
       <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/owlcarousel.css') }}">
       <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/rating.css') }}">
 
-
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/sweetalert2.css') }}"> --}}
 <!-- Plugins css Ends-->
@@ -37,3 +36,4 @@
 <link id="color" rel="stylesheet" href="{{ asset('assets/css/color-1.css') }}" media="screen">
 <!-- Responsive css-->
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
+
