@@ -12,15 +12,10 @@
                   <div class="card-header pb-0">
                     <h5>Liste des demandeurs</h5>
                     <div class="form-group text-end mb-5">
-                      <a class="btn btn-primary btn-block " type="button" href="{{ route('admin.demandeur.create') }}" >Ajouter un demandeur</a>
+                      <a class="btn btn-primary " type="button" href="{{ route('admin.demandeur.create') }}" >Ajouter un demandeur</a>
                     </div>
-                    
-                    
-
                   </div>
-                  @if (session('success'))
-                  <div class="alert alert-success">{{ session('success') }}</div>
-                  @endif
+
                   <div class="card-body">
                     
                     <div class="table-responsive product-table">

@@ -1,12 +1,12 @@
 "use strict";
 ;(function ($) { $.fn.datepicker.language['en'] = {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    daysShort: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-    daysMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-    months: ['January','February','March','April','May','June', 'July','August','September','October','November','December'],
-    monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    today: 'Today',
-    clear: 'Clear',
+    days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+    daysShort: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    daysMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+    monthsShort: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+    today: 'Aujourd\'hui',
+    clear: 'Effacer',
     dateFormat: 'mm/dd/yyyy',
     timeFormat: 'hh:ii aa',
     firstDay: 0

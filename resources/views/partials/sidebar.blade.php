@@ -1,7 +1,10 @@
 <header class="main-nav">
-    <div class="sidebar-user text-center"><img class="img-90 rounded-circle" src="{{ asset('assets/images/dashboard/1.png') }}" alt="">
+    <div class="sidebar-user text-center">
+      <h3 class="h2-90 pt-3 rounded-circle bg-grey ">{{ substr(Auth::user()->first_name, 0, 1) }} {{substr( Auth::user()->last_name,0,1 )}} </h3> 
+     {{-- <img class="img-90 rounded-circle" src="../assets/images/dashboard/1.png" alt=""> --}}
+
       <a href="{{ route('profile.edit') }}">
-        <h6 class="mt-3 f-14 f-w-600">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6>
+        <h6 class="mt-3 f-14 f-w-600">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6> 
       </a>
       <p class="mb-0 font-roboto">{{ strtoupper( Auth::user()->role->libelle )}} </p>
      

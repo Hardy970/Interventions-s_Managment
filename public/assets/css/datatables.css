@@ -14,7 +14,6 @@ table.dataTable {
   table.dataTable.nowrap th,
   table.dataTable.nowrap td {
     white-space: nowrap; }
-
 div.dataTables_wrapper div.dataTables_length label {
   font-weight: normal;
   text-align: left;

@@ -95,7 +95,7 @@
   img{
     height: 40px;
   }
-  span,p{
+  p{
     color: $semi-dark;
   }
   tbody{
@@ -390,9 +390,9 @@
       text-transform: uppercase;
       margin-bottom: 10px;
     }
-    span{
-      color: $dark-gray;
-    }
+    // span{
+    //   color: $dark-gray;
+    // }
   }
   .modal {
     .modal-header {
@@ -717,10 +717,10 @@ ul.pro-services {
     .progress-showcase{
       margin-top:30px;
     }
-    span{
-      font-weight:500;
-      color:$light-font;
-    }
+    // span{
+    //   font-weight:500;
+    //   color:$light-font;
+    // }
     ul{
       li{
         font-weight:600;

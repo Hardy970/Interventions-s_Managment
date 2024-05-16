@@ -3,18 +3,19 @@
 use App\Models\TypeIntervention;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\EquipeController;
 use App\Http\Controllers\Admin\ProduitController;
 use App\Http\Controllers\Admin\SocieteController;
 use App\Http\Controllers\Admin\VehiculeController;
 use App\Http\Controllers\Admin\CategorieController;
 use App\Http\Controllers\Admin\ChauffeurController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DemandeurController;
 use App\Http\Controllers\Admin\ConsultantController;
 use App\Http\Controllers\Admin\TypeDemandeController;
 use App\Http\Controllers\Admin\InterventionController;
 use App\Http\Controllers\Admin\FaitGenerateurController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TypeInterventionController;
 
 Route::get('/', function () {
@@ -22,9 +23,7 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function(){
-    Route::get('dashboard',function(){
-        return view('pages.dashboard');
-    })->name('dashboard');
+    Route::get('dashboard',[DashboardController::class, 'index'])->name('dashboard');
     Route::resource('consultant', ConsultantController::class)->except('show');
     Route::put('consultant/{consultant}/block',[ConsultantController::class,'block'])->name('consultant.block');
     Route::put('consultant/{consultant}/unblock',[ConsultantController::class,'unblock'])->name('consultant.unblock');

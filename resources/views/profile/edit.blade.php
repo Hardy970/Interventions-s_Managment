@@ -129,6 +129,7 @@
                             <div class="mb-3">
                               <label class="form-label">Email </label>
                               <input class="form-control" type="email" name="email" disabled value="{{ old('email',Auth::user()->email) }}" >
+                              <input class="form-control" type="email" name="email" hidden value="{{ old('email',Auth::user()->email) }}" >
                               @error('email')
                                   {{ $message }}
                               @enderror
@@ -152,6 +153,23 @@
                               @enderror
                             </div>
                           </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class=" form-group">
+                              <label>Equipe du consultant</label>
+                                <select name="equipe_id" class="js-example-basic-single">
+                                  <option value="">Choisir une équipe</option>
+                                  @foreach ($equipes as $equipe)
+                                      <option value="{{ $equipe->id }}" @selected($equipe->id==Auth::user()->equipe_id)>{{ $equipe->nom }}</option>
+                                  @endforeach
+                                </select>
+                              @error('equipe_id')
+                              <div>
+                                <span class="text-danger fw-bold "> {{ $message }} </span>
+                              </div>
+                              @enderror
+                            </div>
                         </div>
                       </div>
                       <div class="card-footer text-end">

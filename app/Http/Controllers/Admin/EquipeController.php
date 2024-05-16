@@ -67,7 +67,7 @@ class EquipeController extends Controller
         ]);
         $equipe->update(($request->all()));
 
-        return redirect()->route('admin.equipe.index')->with('success','Equipe Modifiée avec succès');
+        return redirect()->route('admin.equipe.index')->with('success','Equipe modifiée avec succès');
     }
 
     /**
@@ -76,6 +76,6 @@ class EquipeController extends Controller
     public function destroy(Equipe $equipe)
     {
         $equipe->delete() ;
-        return redirect()->route('admin.equipe.index')->with('success','Equipe Supprimée avec succès');
+        return redirect()->route('admin.equipe.index')->with('success','Equipe supprimée avec succès');
     }
 }

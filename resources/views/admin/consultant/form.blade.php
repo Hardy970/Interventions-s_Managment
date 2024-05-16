@@ -17,7 +17,7 @@
             <div class="row g-2">
               <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
-                  <div class="col-sm-6">
+                  <div class="col-sm-6 form-group">
                     <label>Prénoms du consultant</label>
                     <input class="form-control" id="con-name" type="text" autofocus  placeholder="Prénoms"  value="{{ old('first_name',$consultant->first_name) }}"  name="first_name" >
                     @error('first_name')
@@ -26,7 +26,7 @@
                     </div>
                     @enderror
                   </div>
-                  <div class="col-sm-6">   
+                  <div class="col-sm-6 form-group">   
                     <label>Nom du consultant</label>
                     <input class="form-control" id="con-last" type="text"  placeholder="Nom"   value="{{ old('last_name',$consultant->last_name) }}"  name="last_name">
                     @error('last_name')
@@ -40,6 +40,7 @@
               <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
                   <div class="col-sm-7">
+                    <div class=" form-group">
                     <label for="con-mail">Email </label>
                     <input class="form-control" id="con-mail" type="email"  value="{{ old('email',$consultant->email) }}"  name="email" >
                     @error('email')
@@ -48,11 +49,12 @@
                     </div>
                     @enderror
                   </div>
+                  </div>
                   <div class="col-sm-5">
                     <div class=" form-group">
                       <label>Rôle</label>
                       <div class="input-group">
-                        <select name="role_id" class="form-select" >
+                        <select name="role_id" class="js-example-basic-single" >
                           <option value="">Choisir un rôle</option>
                           @foreach ($roles as $role)
                               <option value="{{ $role->id }}" @selected($role->id==$consultant->role_id)>{{ $role->libelle }}</option>
@@ -75,9 +77,7 @@
                   <div class="col-sm-6">
                         <div class="form-group">
                             <label>Mot de passe </label>
-                            <div class="input-group">
                                 <input class="form-control" type="password"   name="password" >
-                            </div>
                          @error('password')
                          <div>
                           <span class="text-danger fw-bold "> {{ $message }} </span>
@@ -89,14 +89,12 @@
                   <div class="col-sm-6">
                     <div class=" form-group">
                       <label>Equipe du consultant</label>
-                      <div class="input-group">
-                        <select name="equipe_id" class="form-control form-select ">
+                        <select name="equipe_id" class="js-example-basic-single">
                           <option value="">Choisir une équipe</option>
                           @foreach ($equipes as $equipe)
                               <option value="{{ $equipe->id }}" @selected($equipe->id==$consultant->equipe_id)>{{ $equipe->nom }}</option>
                           @endforeach
                         </select>
-                      </div>
                       @error('equipe_id')
                       <div>
                         <span class="text-danger fw-bold "> {{ $message }} </span>

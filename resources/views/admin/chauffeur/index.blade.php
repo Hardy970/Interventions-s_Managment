@@ -12,15 +12,12 @@
                   <div class="card-header pb-0">
                     <h5>Liste des chauffeurs</h5>
                     <div class="form-group text-end mb-5">
-                      <a class="btn btn-primary btn-block " type="button" href="{{ route('admin.chauffeur.create') }}" >Ajouter un chauffeur</a>
+                      <a class="btn btn-primary " type="button" href="{{ route('admin.chauffeur.create') }}" >Ajouter un chauffeur</a>
                     </div>
                     
                     
 
                   </div>
-                  @if (session('success'))
-                  <div class="alert alert-success">{{ session('success') }}</div>
-                  @endif
                   <div class="card-body">
                     
                     <div class="table-responsive product-table">

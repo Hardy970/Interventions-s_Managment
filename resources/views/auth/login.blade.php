@@ -21,8 +21,8 @@
     <div class="form-group">
       <label>Password</label>
       <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
-        <input class="form-control" type="password" name="password" required="" >
-        <div class="show-hide"><span class="show">                         </span></div>
+        <input class="form-control " type="password" name="password">
+        <div class="show-hide" id="password-addon" ><i  class="mdi mdi-eye-outline"></i></div> 
       </div>
     </div>
     <div class="form-group">

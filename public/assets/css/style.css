@@ -146,7 +146,9 @@ p {
   font-size: 14px;
   line-height: 1.7;
   letter-spacing: inherit; }
-
+  #span{
+    color:white;
+  }
 span {
   font-weight: 500; }
 
@@ -1204,6 +1206,13 @@ a:hover {
 
 .img-90 {
   width: 90px !important; }
+  .h2-90 {
+    width: 90px ; 
+    margin: auto;
+    height: 90px ;
+    text-align: center;
+    border: 10px solid rgba(36, 105, 92, 0.2);
+  }
 
 .img-100 {
   width: 100px !important; }
@@ -5187,7 +5196,7 @@ table tbody .border-bottom-warning td {
       position: relative;
       border-bottom: 1px solid #e6edef;
       margin-bottom: 20px; }
-      .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav .sidebar-user img {
+      .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav .sidebar-user img .sidebar-user h2 {
         border: 10px solid rgba(36, 105, 92, 0.2); }
       .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav .sidebar-user .setting-primary {
         position: absolute;
@@ -8784,7 +8793,7 @@ table tbody .border-bottom-warning td {
         overflow: hidden;
         margin-left: auto;
         margin-right: auto; }
-        .chat-box .chat-menu .user-profile .image .avatar img {
+        .chat-box .chat-menu .user-profile .image .avatar img  {
           width: 100%;
           height: 100%;
           border-radius: 50%;
@@ -10255,7 +10264,7 @@ strong {
       margin-right: auto;
       border: 7px solid rgba(36, 105, 92, 0.08);
       margin-bottom: 15px; }
-      .user-profile .profile-header .userpro-box .avatar img {
+      .user-profile .profile-header .userpro-box .avatar img .avatar h2 {
         width: 100%;
         height: 100%; }
     .user-profile .profile-header .userpro-box .icon-wrapper {
@@ -12187,8 +12196,8 @@ table.dataTable.display tbody tr {
 .product-table img {
   height: 40px; }
 
-.product-table span, .product-table p {
-  color: #59667a; }
+ /* .product-table p {
+  color: #59667a; } */
 
 .product-table tbody tr td:first-child {
   text-align: center; }
@@ -12217,7 +12226,7 @@ table.dataTable.display tbody tr {
 
 .product-wrapper-grid.list-view [class*="col-"] {
   width: 100%; }
-
+ 
 .slider-product {
   padding: 15px 0;
   border-top: 1px solid #e6edef;
@@ -30929,7 +30938,7 @@ span.twitter-typeahead .tt-suggestion {
 @media only screen and (max-width: 360px) {
   .rtl .social-app-profile .hovercard .user-image .avatar {
     margin-top: -47px; }
-    .rtl .social-app-profile .hovercard .user-image .avatar img {
+    .rtl .social-app-profile .hovercard .user-image .avatar img .avatar h2{
       width: 85px;
       height: 85px; }
   .rtl .social-chat .other-msg {

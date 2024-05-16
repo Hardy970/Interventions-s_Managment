@@ -19,6 +19,7 @@ class ProfileUpdateRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'first_name' => ['required', 'string'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'equipe_id'=>['required','exists:equipes,id']
         ];
     }
     public function messages(): array
@@ -26,6 +27,8 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'last_name.required' => 'Ce champ est requis.',
             'first_name.required' => 'Ce champ est requis.',
+            'equipe_id.required' => 'Ce champ est requis.',
+            'equipe_id.exists' => 'Veuillez séléctionner une équipe',
             'email.required' => 'Ce champ est requis.',
             'email.unique' => 'Cette adresse email est déjà utilisée',
 

@@ -1,3 +1,7 @@
+@php
+  use App\Models\Intervention;
+
+@endphp
 @extends('layout')
 
 @section('title','intervention')
@@ -11,24 +15,30 @@
           <h5 class="modal-title" id="exampleModalLabel">{{ $intervention->exists?'Modifier une intervention':'Ajouter une intervention' }}</h5>
         </div>
         <div class="modal-body">
-          <form class=" needs-validation" id="bookmark-form" method="POST" action=" {{ !$intervention->exists?route('admin.intervention.store'):route('admin.intervention.update',['intervention'=>$intervention ])}}" >
+          <form class=" needs-validation" id="bookmark-form" method="POST" action=" {{ !$intervention->exists?route('admin.interventions.store'):route('admin.interventions.update',['intervention'=>$intervention ])}}" >
             @csrf
             @method($intervention->exists?'PUT':'POST')
             <div class="row g-2">
               <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
                   <div class="col-sm-6">
+                    <div class=" form-group">
                     <label>Date de demande</label>
-                    <input class="form-control" id="con-name" type="date"  value="{{ old('date_demande',$intervention->date_demande) }}"  name="date_demande" >
+                    <div class="input-group">
+                      <input name="date_demande" value="{{ old('date_demande',$intervention->getDateDemande()) }}"   class="datepicker-here form-control digits" type="text" data-language="en">
+                    </div>
                     @error('date_demande')
-                        {{ $message }}
+                    <div>
+                      <span class="text-danger fw-bold "> {{ $message }} </span>
+                    </div>
                     @enderror
+                    </div>
                   </div>
                   <div class="col-sm-6">   
                     <div class=" form-group">
-                      <label>Fait générateur</label>
+                      <label class="">Fait générateur</label>
                       <div class="input-group">
-                        <select name="fait_generateur_id" id="" class="form-control form-select " >
+                        <select name="fait_generateur_id" id="" class="js-example-basic-single " data-placeholder="Choisir un fait générateur" >
                           <option value="">Choisir un fait générateur</option>
                           @foreach ($faitsgenerateurs as $faitgenerateur)
                               <option value="{{ $faitgenerateur->id }}" @selected($faitgenerateur->id==$intervention->fait_generateur_id)>{{ $faitgenerateur->libelle }}</option>
@@ -46,14 +56,14 @@
               </div>
               <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
+                  
                   <div class="col-sm-6">
-                    <div class=" form-group">
+                    <div class="">
                       <label>Type de demande :</label>
-                      <div class="input-group">
-                        <select name="typesdemandes[]" multiple id="" class="form-control form-select " >
-                          <option value="">Choisir le ou les types de demande</option>
+                      <div class="">
+                        <select name="typesdemandes[]" multiple id="" class="js-example-placeholder-multiple " data-placeholder="Choisir le ou les types de demande" >
                           @foreach ($typesdemandes as $typedemande)
-                              <option value="{{ $typedemande->id }}" @selected($intervention->typesdemandes()->contains($typedemande))>{{ $typedemande->libelle }}</option>
+                              <option value="{{ $typedemande->id }}" @selected($intervention->typesdemandes->contains($typedemande))>{{ $typedemande->libelle }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -68,7 +78,7 @@
                     <div class=" form-group">
                       <label>Demandeur:</label>
                       <div class="input-group">
-                        <select name="demandeur_id" id="" class="form-control form-select " >
+                        <select name="demandeur_id" id="" class="js-example-basic-single " >
                           <option value="">Choisir un demandeur</option>
                           @foreach ($demandeurs as $demandeur)
                               <option value="{{ $demandeur->id }}" @selected($demandeur->id==$intervention->demandeur_id)>{{ $demandeur->nom }}</option>
@@ -86,14 +96,26 @@
               </div>
               <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
+                  <div class="col">
+                    <label class=" form-label ">Feedback Client : </label>
+                    <textarea name="feedback" id="" class="form-control"     rows="3">{{ old('feedback',$intervention->feedback) }}</textarea>
+                    @error('feedback')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 col-md-12 mt-0">
+                <div class="row">
                   <div class="col-sm-6">
                     <div class=" form-group">
                       <label>Consultants :</label>
                       <div class="input-group">
-                        <select name="consultants[]" multiple id="" class="form-control form-select " >
-                          <option value="">Choisir le ou les consultants</option>
+                        <select name="consultants[]" multiple id=""  class="js-example-placeholder-multiple " data-placeholder="Choisir le ou les consultants" >
                           @foreach ($consultants as $consultant)
-                              <option value="{{ $consultant->id }}" @selected($intervention->consultants()->contains($consultant))>{{ $consultant->last_name }} {{ $consultant->first_name }}</option>
+                              <option value="{{ $consultant->id }}" @selected($intervention->consultants->contains($consultant))>{{ $consultant->last_name }} {{ $consultant->first_name }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -108,8 +130,7 @@
                     <div class=" form-group">
                       <label>Type d'intervention:</label>
                       <div class="input-group">
-                        <select name="typesinterventions[]" id="" class="form-control form-select " >
-                          <option value="">Choisir le ou les types d'intervention</option>
+                        <select name="typesinterventions[]" id="" multiple class="js-example-placeholder-multiple " data-placeholder="Choisir le ou les types d'intervention">
                           @foreach ($typesinterventions as $typeintervention)
                               <option value="{{ $typeintervention->id }}" @selected($intervention->typesinterventions->contains($typeintervention))>{{ $typeintervention->libelle }}</option>
                           @endforeach
@@ -127,13 +148,12 @@
               <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
                   <div class="col-sm-6">
-                    <div class=" form-group">
+                    <div class="">
                       <label>Produits concernés :</label>
                       <div class="input-group">
-                        <select name="produits[]" multiple id="" class="form-control form-select " >
-                          <option value="">Choisir le ou les produits</option>
+                        <select name="produits[]" multiple id="" class="js-example-placeholder-multiple " data-placeholder="Séléctionner les produits " >
                           @foreach ($produits as $produit)
-                              <option value="{{ $produit->id }}" @selected($intervention->produits()->contains($produit))>{{ $produit->libelle }}</option>
+                              <option value="{{ $produit->id }}" @selected($intervention->produits->contains($produit))>{{ $produit->libelle }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -149,13 +169,14 @@
                       <div class="col-sm-12">
                         <label>Transport :</label>
                       </div>
-                      <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                      <div class="form-group m-checkbox-inline mb-0 custom-radio-ml">
                         <div class="radio radio-primary">
-                          <input id="radioinline1" type="radio" name="est_vehicule_service" value="1">
                           <label class="mb-0" for="radioinline1">Véhicule de service</label>
+                          <input id="radioinline1" class="toggleBlock" type="radio" name="est_vehicule_service" value="1" {{ @old('est_vehicule_service',$intervention->est_vehicule_service)=='1'? 'checked':'' }}>
+
                         </div>
                         <div class="radio radio-primary">
-                          <input id="radioinline2" type="radio" name="est_vehicule_service" value="0">
+                          <input id="radioinline2" type="radio" name="est_vehicule_service" value="0" {{ @old('est_vehicule_service',$intervention->est_vehicule_service)=='0'? 'checked':'' }}>
                           <label class="mb-0" for="radioinline2">Véhicule personnel</label>
                         </div>
                       </div>
@@ -168,22 +189,167 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-12">
-                <h5>Inline checkbox</h5>
+              <div class="mb-3 col-md-12 mt-0" id="blockToToggle" style="display: none" >
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class=" form-group">
+                      <label>Véhicule :</label>
+                      <div class="input-group">
+                        <select name="vehicule_id" id="" class=" js-example-basic-single" >
+                          <option value="">Choisir un véhicule</option>
+                          @foreach ($vehicules as $vehicule)
+                              <option value="{{ $vehicule->id }}" @selected($intervention->vehicule_id==$vehicule->id)>{{ $vehicule->matricule }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      @error('vehicule_id')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class=" form-group">
+                      <label>Chauffeur :</label>
+                      <div class="input-group">
+                        <select name="chauffeur_id" id="" class="js-example-basic-single" >
+                          <option value="">Choisir un chauffeur</option>
+                          @foreach ($chauffeurs as $chauffeur)
+                              <option value="{{ $chauffeur->id }}" @selected($intervention->chauffeur_id==$chauffeur->id)>{{ $chauffeur->nom }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      @error('chauffeur_id')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="col">
-                <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
-                  <div class="radio radio-primary">
-                    <input id="radioinline1" type="radio" name="radio1" value="option1">
-                    <label class="mb-0" for="radioinline1">Option<span class="digits"> 1</span></label>
+              <div class="mb-3 col-md-12 mt-0">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class=" form-group">
+                      <label>Heure de départ du bureau :</label>
+                      <div class="input-group clockpicker pull-center"  data-autoclose="true">
+                        <input class="form-control" name="h_depart_b" type="text" value="{{ old('h_depart_b', Intervention::getHour($intervention->h_depart_b) ) }}" ><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                      </div>
+                      @error('h_depart_b')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
                   </div>
-                  <div class="radio radio-primary">
-                    <input id="radioinline2" type="radio" name="radio1" value="option1">
-                    <label class="mb-0" for="radioinline2">Option<span class="digits"> 2</span></label>
+                  <div class="col-sm-3">
+                    <div class=" form-group">
+                      <label>Heure d'arrivée chez le client :</label>
+                      <div class="input-group clockpicker pull-center"  data-autoclose="true">
+                        <input class="form-control" name="h_arrivee_c" value="{{ old('h_arrivee_c',Intervention::getHour($intervention->h_arrivee_c)) }}" type="text"><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                      </div>
+                      @error('h_arrivee_c')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
                   </div>
-                  <div class="radio radio-primary">
-                    <input id="radioinline3" type="radio" name="radio1" value="option1">
-                    <label class="mb-0" for="radioinline3">Option<span class="digits"> 3</span></label>
+                  <div class="col-sm-3">
+                    <div class=" form-group">
+                      <label>Heure de départ chez le client :</label>
+                      <div class="input-group clockpicker pull-center"  data-autoclose="true">
+                        <input class="form-control" name="h_depart_c" value="{{ old('h_depart_c',Intervention::getHour($intervention->h_depart_c)) }}" type="text"><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                      </div>
+                      @error('h_depart_c')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class=" form-group">
+                      <label>Heure de rentrée au bureau :</label>
+                      <div class="input-group clockpicker pull-center" data-autoclose="true">
+                        <input class="form-control" name="h_arrivee_b" value="{{ old('h_arrivee_b',Intervention::getHour($intervention->h_arrivee_b)) }}" type="text" ><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                      </div>
+                      @error('h_arrivee_b')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+              <div class="mb-3 col-md-12 mt-0">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <div class=" form-group">
+                      <label>Date de début :</label>
+                      <div class="input-group">
+                        <input name="date_debut" value="{{ old('date_debut',$intervention->getDateDebut()) }}" class="datepicker-here form-control digits" type="text" data-language="en">
+                      </div>
+                      @error('date_debut')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3">
+                    <div class=" form-group">
+                      <label>Date de fin :</label>
+                      <div class="input-group">
+                        <input name="date_fin" value="{{ old('date_fin',$intervention->getDateFin()) }}" class="datepicker-here form-control digits" type="text" data-language="en">
+                      </div>
+                      @error('date_fin')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-6">   
+                    <div class=" form-group">
+                      <div class="col-sm-12">
+                        <label>Statut de facturation :</label>
+                      </div>
+                      <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                        <div class="radio radio-primary">
+                          <input id="radioinline3" type="radio" name="statut_fact" value="0" {{ @old('statut_fact',$intervention->statut_fact)=='0'? 'checked':'' }}>
+                          <label class="mb-0" for="radioinline3">Non Facturée</label>
+                        </div>
+                        <div class="radio radio-primary">
+                          <input id="radioinline4" type="radio" name="statut_fact" value="1" {{ @old('statut_fact',$intervention->statut_fact)=='1'? 'checked':'' }}>
+                          <label class="mb-0" for="radioinline4">Facturée</label>
+                        </div>
+                      </div>
+                      @error('statut_fact')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 col-md-12 mt-0">
+                <div class="row">
+                  <div class="col">
+                    <label class=" form-label ">Travaux effectués et observations: </label>
+                    <textarea name="travaux" id="" class="form-control"  rows="3">{{ old('travaux',$intervention->travaux) }}</textarea>
+                    @error('travaux')
+                      <div>
+                        <span class="text-danger fw-bold "> {{ $message }} </span>
+                      </div>
+                      @enderror
                   </div>
                 </div>
               </div>

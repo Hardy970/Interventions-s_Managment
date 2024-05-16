@@ -3,16 +3,24 @@ setTimeout(function(){
         (function($) {
             "use strict";
             // Single Search Select
-            $(".js-example-basic-single").select2();
+            $(".js-example-basic-single").each(function() {
+                var placeholderText = $(this).data('placeholder');
+                $(this).select2({
+                    placeholder: placeholderText
+                });
+            });;
             $(".js-example-disabled-results").select2();
 
             // Multi Select
             $(".js-example-basic-multiple").select2();
 
             // With Placeholder
-            $(".js-example-placeholder-multiple").select2({
-                placeholder: "Select Your Name"
+        $(".js-example-placeholder-multiple").each(function() {
+            var placeholderText = $(this).data('placeholder');
+            $(this).select2({
+                placeholder: placeholderText
             });
+        });
 
             //Limited Numbers
             $(".js-example-basic-multiple-limit").select2({

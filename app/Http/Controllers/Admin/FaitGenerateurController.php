@@ -31,7 +31,7 @@ class FaitGenerateurController extends Controller
     public function store(FaitGenerateurRequest $request)
     {
         FaitGenerateur::create($request->validated());
-        return redirect()->route('admin.faitgenerateur.index')->with('success','faitgenerateur ajouté avec succès');
+        return redirect()->route('admin.faitgenerateur.index')->with('success','Fait générateur ajouté avec succès');
     }
 
     /**
@@ -53,7 +53,7 @@ class FaitGenerateurController extends Controller
     public function update(FaitGenerateurRequest $request, FaitGenerateur $faitgenerateur)
     {
         $faitgenerateur->update($request->validated());
-        return redirect()->route('admin.faitgenerateur.index')->with('success','faitgenerateur mis à jour avec succès');
+        return redirect()->route('admin.faitgenerateur.index')->with('success','Fait générateur mis à jour avec succès');
     }
 
     /**
@@ -62,6 +62,6 @@ class FaitGenerateurController extends Controller
     public function destroy(FaitGenerateur $faitgenerateur)
     {
         $faitgenerateur->delete();
-        return redirect()->route('admin.faitgenerateur.index')->with('success','faitgenerateur supprimé avec succès');
+        return redirect()->route('admin.faitgenerateur.index')->with('success','Fait générateur supprimé avec succès');
     }
 }

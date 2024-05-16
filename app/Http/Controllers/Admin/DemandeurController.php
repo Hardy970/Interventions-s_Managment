@@ -32,7 +32,7 @@ class DemandeurController extends Controller
     public function store(DemandeurRequest $request)
     {
         Demandeur::create($request->validated());
-        return redirect()->route('admin.demandeur.index')->with('success','demandeur ajouté avec succès');
+        return redirect()->route('admin.demandeur.index')->with('success','Demandeur ajouté avec succès');
     }
 
     /**
@@ -54,7 +54,7 @@ class DemandeurController extends Controller
     public function update(DemandeurRequest $request, Demandeur $demandeur)
     {
         $demandeur->update($request->validated());
-        return redirect()->route('admin.demandeur.index')->with('success','demandeur mis à jour avec succès');
+        return redirect()->route('admin.demandeur.index')->with('success','Demandeur mis à jour avec succès');
     }
 
     /**
@@ -63,6 +63,6 @@ class DemandeurController extends Controller
     public function destroy(Demandeur $demandeur)
     {
         $demandeur->delete();
-        return redirect()->route('admin.demandeur.index')->with('success','demandeur supprimé avec succès');
+        return redirect()->route('admin.demandeur.index')->with('success','Demandeur supprimé avec succès');
     }
 }

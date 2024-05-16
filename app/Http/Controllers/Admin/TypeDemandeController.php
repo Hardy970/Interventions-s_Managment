@@ -31,7 +31,7 @@ class TypeDemandeController extends Controller
     public function store(typedemandeRequest $request)
     {
         typedemande::create($request->validated());
-        return redirect()->route('admin.typedemande.index')->with('success','type de demande ajouté avec succès');
+        return redirect()->route('admin.typedemande.index')->with('success','Type de demande ajouté avec succès');
     }
 
     /**
@@ -53,7 +53,7 @@ class TypeDemandeController extends Controller
     public function update(TypeDemandeRequest $request, TypeDemande $typedemande)
     {
         $typedemande->update($request->validated());
-        return redirect()->route('admin.typedemande.index')->with('success','type de demande mis à jour avec succès');
+        return redirect()->route('admin.typedemande.index')->with('success','Type de demande mis à jour avec succès');
     }
 
     /**
@@ -62,6 +62,6 @@ class TypeDemandeController extends Controller
     public function destroy(TypeDemande $typedemande)
     {
         $typedemande->delete();
-        return redirect()->route('admin.typedemande.index')->with('success','type de demande supprimé avec succès');
+        return redirect()->route('admin.typedemande.index')->with('success','Type de demande supprimé avec succès');
     }
 }

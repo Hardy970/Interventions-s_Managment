@@ -12,7 +12,7 @@
                   <div class="card-header pb-0">
                     <h5>Liste des equipes</h5>
                     <div class="form-group text-end mb-5">
-                      <a href="{{ route('admin.equipe.create') }}" class="btn btn-primary btn-block ">Ajouter une équipe</a>
+                      <a href="{{ route('admin.equipe.create') }}" class="btn btn-primary ">Ajouter une équipe</a>
                     </div>
                     
                   </div>

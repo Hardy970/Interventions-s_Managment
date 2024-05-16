@@ -53,7 +53,7 @@ class SocieteController extends Controller
     public function update(SocieteRequest $request, Societe $societe)
     {
         $societe->update($request->validated());
-        return redirect()->route('admin.societe.index')->with('success','Société mis à jour avec succès');
+        return redirect()->route('admin.societe.index')->with('success','Société mise à jour avec succès');
     }
 
     /**

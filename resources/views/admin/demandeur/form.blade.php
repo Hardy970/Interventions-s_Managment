@@ -56,7 +56,7 @@
                     <div class=" form-group">
                       <label>Société</label>
                       <div class="input-group">
-                        <select name="societe_id" id="" class="form-controsl form-select " >
+                        <select name="societe_id" id="" class="js-example-basic-single " >
                           <option value="">Choisir une société</option>
                           @foreach ($societes as $societe)
                               <option value="{{ $societe->id }}" @selected($societe->id==$demandeur->societe_id)>{{ $societe->nom }}</option>

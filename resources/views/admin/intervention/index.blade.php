@@ -12,7 +12,7 @@
                   <div class="card-header pb-0">
                     <h5>Liste des interventions</h5>
                     <div class="form-group text-end mb-5">
-                      <a class="btn btn-primary btn-block " type="button" href="{{ route('admin.interventions.create') }}" >Ajouter une intervention</a>
+                      <a class="btn btn-primary " type="button" href="{{ route('admin.interventions.create') }}" >Ajouter une intervention</a>
                     </div>
                     
                     
@@ -46,18 +46,18 @@
                           @foreach ( $interventions as $intervention )
                           <tr>
                             <td>
-                              {{ $intervention->date_demande }}
+                              {{ $intervention->getDateDemande() }}
                             </td>
                             <td >
                               @foreach ($intervention->typesdemandes as $typedemande )
-                                {{ $typedemande->libelle }}
+                              <span id="span" class="badge badge-info text-center ">{{ $typedemande->libelle }}</span>
                               @endforeach
                             </td>
                             <td>
                               {{ $intervention->demandeur->societe->nom }}
                             </td>
                             <td>
-                              {{ $intervention->faitgenerateur->libelle }}
+                              {{ $intervention->fait_generateur->libelle }}
                             </td>
                             <td>
                               {{ $intervention->feedback }}
@@ -69,25 +69,34 @@
                             </td>
                             <td>
                               @foreach ($intervention->produits as $produit )
-                              {{ $produit->libelle }}
+                              <span id="span" class="badge badge-secondary">{{ $produit->libelle }}</span>
                               @endforeach
                             </td>
                             <td>
                               @foreach ($intervention->typesinterventions as $typesintervention )
-                              {{ $typesintervention->libelle }} 
+                              <span id="span" class="badge badge-info mt-1 mx-2">{{ $typesintervention->libelle }} </span>
                               @endforeach
                             </td>
                             <td>
+                              @if( !empty($intervention->vehicule) )
                               {{ $intervention->vehicule->matricule }}
+                              @endif
+                              
                             </td>
                             <td>
-                              {{ $intervention->chauffeur->nom }}
+                              @if( !empty($intervention->chauffeur) )
+                              {{ $intervention->chauffeur->nom  }}
+                              @endif
                             </td>
                             <td>
                               {{ $intervention->travaux }}
                             </td>
                             <td>
-                              {{ $intervention->statut_fact?'Payé':'Non payé' }}
+                              @if ($intervention->statut_fact)
+                                <span id="span" class="badge badge-success">Payé</span>
+                              @else
+                              <span class="badge badge-danger">Non Payé</span>
+                              @endif
                             </td>
                             <td class=" d-flex gap-1">
                               {{-- <a class="btn btn-danger btn-xs" type="button" href="{{ route('admin.intervention.destroy',['intervention'=>$intervention->id]) }}" data-original-title="btn btn-danger btn-xs" title="">Delete</a> --}}

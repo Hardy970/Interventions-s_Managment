@@ -31,7 +31,7 @@ class TypeInterventionController extends Controller
     public function store(TypeInterventionRequest $request)
     {
         TypeIntervention::create($request->validated());
-        return redirect()->route('admin.typeintervention.index')->with('success','type d\'intervention ajouté avec succès');
+        return redirect()->route('admin.typeintervention.index')->with('success','Type d\'intervention ajouté avec succès');
     }
 
     /**
@@ -53,7 +53,7 @@ class TypeInterventionController extends Controller
     public function update(TypeInterventionRequest $request, TypeIntervention $typeintervention)
     {
         $typeintervention->update($request->validated());
-        return redirect()->route('admin.typeintervention.index')->with('success','type d\'intervention mis à jour avec succès');
+        return redirect()->route('admin.typeintervention.index')->with('success','Type d\'intervention mis à jour avec succès');
     }
 
     /**
@@ -62,6 +62,6 @@ class TypeInterventionController extends Controller
     public function destroy(TypeIntervention $typeintervention)
     {
         $typeintervention->delete();
-        return redirect()->route('admin.typeintervention.index')->with('success','type d\'intervention supprimé avec succès');
+        return redirect()->route('admin.typeintervention.index')->with('success','Type d\'intervention supprimé avec succès');
     }
 }

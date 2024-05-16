@@ -31,7 +31,7 @@ class ChauffeurController extends Controller
     public function store(ChauffeurRequest $request)
     {
         Chauffeur::create($request->validated());
-        return redirect()->route('admin.chauffeur.index')->with('success','chauffeur ajouté avec succès');
+        return redirect()->route('admin.chauffeur.index')->with('success','Chauffeur ajouté avec succès');
     }
 
     /**
@@ -53,7 +53,7 @@ class ChauffeurController extends Controller
     public function update(ChauffeurRequest $request, Chauffeur $chauffeur)
     {
         $chauffeur->update($request->validated());
-        return redirect()->route('admin.chauffeur.index')->with('success','chauffeur mis à jour avec succès');
+        return redirect()->route('admin.chauffeur.index')->with('success','Chauffeur mis à jour avec succès');
     }
 
     /**
@@ -62,6 +62,6 @@ class ChauffeurController extends Controller
     public function destroy(Chauffeur $chauffeur)
     {
         $chauffeur->delete();
-        return redirect()->route('admin.chauffeur.index')->with('success','chauffeur supprimé avec succès');
+        return redirect()->route('admin.chauffeur.index')->with('success','Chauffeur supprimé avec succès');
     }
 }

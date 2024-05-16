@@ -34,7 +34,7 @@
                     <div class=" form-group">
                       <label>Catégorie du produit</label>
                       <div class="input-group">
-                        <select name="categorie_id" id="" class="form-controsl form-select " >
+                        <select name="categorie_id" id="" class="js-example-basic-single " >
                           <option value="">Choisir une catégorie</option>
                           @foreach ($categories as $categorie)
                               <option value="{{ $categorie->id }}" @selected($categorie->id==$produit->categorie_id)>{{ $categorie->libelle }}</option>

@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_intervention', function (Blueprint $table) {
+        Schema::create('intervention_user', function (Blueprint $table) {
             $table->foreignIdFor(Intervention::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->primary(['intervention_id','user_id']);

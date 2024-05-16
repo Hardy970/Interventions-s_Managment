@@ -38,6 +38,7 @@
             @include('partials.sidebar')
         <!-- Page Sidebar Ends-->
         <div class="page-body">
+         
           <!-- Container-fluid starts-->
             @yield('content')
           <!-- Container-fluid Ends-->
@@ -61,7 +62,6 @@
 //         new TomSelect(select);
 //     });
 // })
-new TomSelect('select[multiple]',{plugins:{remove_button:{title:'Supprimer'}}})
 
     </script>
     

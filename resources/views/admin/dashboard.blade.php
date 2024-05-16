@@ -1,0 +1,1 @@
+{{-- SELECT equipes.nom ,count(*) from intervention_user,users,equipes where intervention_user.user_id = users.id and users.equipe_id=equipes.id GROUP by intervention_id, equipe_id,equipes.nom; --}}

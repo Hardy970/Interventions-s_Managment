@@ -31,7 +31,7 @@ class CategorieController extends Controller
     public function store(CategorieRequest $request)
     {
         Categorie::create($request->validated());
-        return redirect()->route('admin.categorie.index')->with('success','categorie ajouté avec succès');
+        return redirect()->route('admin.categorie.index')->with('success','Catégorie ajoutée avec succès');
     }
 
     /**
@@ -53,7 +53,7 @@ class CategorieController extends Controller
     public function update(CategorieRequest $request, Categorie $categorie)
     {
         $categorie->update($request->validated());
-        return redirect()->route('admin.categorie.index')->with('success','categorie mis à jour avec succès');
+        return redirect()->route('admin.categorie.index')->with('success','Catégorie mise à jour avec succès');
     }
 
     /**
@@ -62,6 +62,6 @@ class CategorieController extends Controller
     public function destroy(Categorie $categorie)
     {
         $categorie->delete();
-        return redirect()->route('admin.categorie.index')->with('success','categorie supprimé avec succès');
+        return redirect()->route('admin.categorie.index')->with('success','Catégorie supprimée avec succès');
     }
 }

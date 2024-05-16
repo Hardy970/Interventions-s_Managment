@@ -32,7 +32,7 @@ class ProduitController extends Controller
     public function store(ProduitRequest $request)
     {
         Produit::create($request->validated());
-        return redirect()->route('admin.produit.index')->with('success','produit ajouté avec succès');
+        return redirect()->route('admin.produit.index')->with('success','Produit ajouté avec succès');
     }
 
     /**
@@ -54,7 +54,7 @@ class ProduitController extends Controller
     public function update(ProduitRequest $request, Produit $produit)
     {
         $produit->update($request->validated());
-        return redirect()->route('admin.produit.index')->with('success','produit mis à jour avec succès');
+        return redirect()->route('admin.produit.index')->with('success','Produit mis à jour avec succès');
     }
 
     /**
@@ -63,6 +63,6 @@ class ProduitController extends Controller
     public function destroy(Produit $produit)
     {
         $produit->delete();
-        return redirect()->route('admin.produit.index')->with('success','produit supprimé avec succès');
+        return redirect()->route('admin.produit.index')->with('success','Produit supprimé avec succès');
     }
 }

@@ -31,7 +31,7 @@ class VehiculeController extends Controller
     public function store(VehiculeRequest $request)
     {
         Vehicule::create($request->validated());
-        return redirect()->route('admin.vehicule.index')->with('success','vehicule ajouté avec succès');
+        return redirect()->route('admin.vehicule.index')->with('success','Véhicule ajouté avec succès');
     }
 
     /**
@@ -53,7 +53,7 @@ class VehiculeController extends Controller
     public function update(VehiculeRequest $request, Vehicule $vehicule)
     {
         $vehicule->update($request->validated());
-        return redirect()->route('admin.vehicule.index')->with('success','vehicule mis à jour avec succès');
+        return redirect()->route('admin.vehicule.index')->with('success','Véhicule mis à jour avec succès');
     }
 
     /**
@@ -62,6 +62,6 @@ class VehiculeController extends Controller
     public function destroy(Vehicule $vehicule)
     {
         $vehicule->delete();
-        return redirect()->route('admin.vehicule.index')->with('success','vehicule supprimé avec succès');
+        return redirect()->route('admin.vehicule.index')->with('success','Véhicule supprimé avec succès');
     }
 }

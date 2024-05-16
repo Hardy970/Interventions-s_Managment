@@ -12,15 +12,9 @@
                   <div class="card-header pb-0">
                     <h5>Liste des types de demande</h5>
                     <div class="form-group text-end mb-5">
-                      <a class="btn btn-primary btn-block " type="button" href="{{ route('admin.typedemande.create') }}" >Ajouter un type de demande</a>
+                      <a class="btn btn-primary" type="button" href="{{ route('admin.typedemande.create') }}" >Ajouter un type de demande</a>
                     </div>
-                    
-                    
-
                   </div>
-                  @if (session('success'))
-                  <div class="alert alert-success">{{ session('success') }}</div>
-                  @endif
                   <div class="card-body">
                     
                     <div class="table-responsive product-table">

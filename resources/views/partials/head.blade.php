@@ -26,8 +26,8 @@
       <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/owlcarousel.css') }}">
       <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/rating.css') }}">
 
-{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/sweetalert2.css') }}"> --}}
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/sweetalert2.css') }}">
 <!-- Plugins css Ends-->
 <!-- Bootstrap css-->
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.css') }}">
@@ -37,3 +37,7 @@
 <!-- Responsive css-->
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
 
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
+
+
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/timepicker.css') }}">
