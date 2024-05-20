@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Equipe;
+use App\Models\Societe;
+use App\Charts\SampleChart;
+use App\Models\Intervention;
 use Illuminate\Http\Request;
+use ConsoleTVs\Charts\Charts;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -12,7 +18,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $nombreInterventions = Intervention::count();
+    $nombreClientsTraites = Societe::count();
+    $nombreConsultants = User::count();
+    $nombreEquipes = Equipe::count();
+
+    return view('admin.dashboard', compact('nombreInterventions', 'nombreClientsTraites', 'nombreConsultants', 'nombreEquipes'));
     }
 
     /**

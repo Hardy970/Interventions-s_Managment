@@ -19,7 +19,7 @@ use App\Http\Controllers\Admin\FaitGenerateurController;
 use App\Http\Controllers\Admin\TypeInterventionController;
 
 Route::get('/', function () {
-    return view('pages.dashboard');
+    return to_route('admin.dashboard');
 })->middleware('auth');
 
 Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function(){

@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "consoletvs/charts": "6.*",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel-lang/lang": "^15.1",
         "laravel/framework": "^11.0",
