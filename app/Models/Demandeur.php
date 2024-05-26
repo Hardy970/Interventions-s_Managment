@@ -19,4 +19,7 @@ class Demandeur extends Model
     public function societe(){
         return $this->belongsTo(Societe::class);
     }
+    public function interventions(){
+        return $this->hasMany(Intervention::class);
+    }
 }

@@ -25,7 +25,9 @@ class User extends Authenticatable
         'role_id',
         'actived'
     ];
-    
+    public function interventions(){
+        return $this->belongsToMany(Intervention::class);
+    }
     public function equipe()
     {
         return $this->belongsTo(Equipe::class);

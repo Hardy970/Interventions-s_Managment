@@ -82,3 +82,7 @@
         });
     </script>
     @endif
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.6/highcharts.js" charset="utf-8"></script>
+    <script src="{{ asset('assets/js/highcharts-3d.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
