@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-        <div class=" col-xl-6 xl-100 box-col-12 mb-4">
+    <div class=" col-xl-6 xl-100 box-col-12 mb-4">
           <div class="row  ">
             <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 " style="min-height: 300px;height: {{ $height }}px" >
               {{ $interventionByType->container() }}
@@ -70,16 +70,33 @@
               {{ $interventionByConsultant->script() }}
             </div>
           </div>
-        </div>
-        
-        <div class=" col-sm-6 col-xl-3 col-lg-6 bg-white " style="min-height: 300px;height: 300px" >
+    </div>
+    <div class=" col-xl-12 xl-100 box-col-12 mb-4">
+      <div class="row  ">
+        <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 bg-white" style="min-height: 300px;height: 300px" >
           {{ $interventionByEquipe->container() }}
           {{ $interventionByEquipe->script() }}
         </div>
-        <div class=" col-sm-6 col-xl-3 col-lg-6 bg-white " style="min-height: 300px;height: 300px" >
+        <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6  " style=" min-height: 300px;height: 300px">
+      
           {{ $vehiculeByIntervention->container() }}
           {{ $vehiculeByIntervention->script() }}
         </div>
+
+      </div>
+    </div>
+    <div class=" col-xl-6 xl-100 box-col-12 mb-4">
+      <div class="row  ">
+        <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 " style="min-height: 300px;height: {{ $height }}px" >      
+            {{ $percentageByProductCategory->container() }}
+            {{ $percentageByProductCategory->script() }}
+        </div>
+        <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6  " style=" min-height: 300px;height: {{ $height }}px">  
+          {{ $statutFacturation->container() }}
+          {{ $statutFacturation->script() }}
+        </div>
+      </div>
+</div>
         
   
       
@@ -107,4 +124,5 @@
       </div>
   </div>
   <!-- Container-fluid Ends-->
+
 @endsection

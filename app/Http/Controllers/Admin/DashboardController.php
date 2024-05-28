@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Charts\InterventionByConsultant;
 use App\Charts\InterventionByEquipe;
+use App\Charts\PercentageByProductCategory;
+use App\Charts\StatutFacturation;
 use App\Charts\VehiculeByIntervention;
 
 class DashboardController extends Controller
@@ -102,7 +104,7 @@ class DashboardController extends Controller
          $interventionByEquipe->options([
             'title'=>[
                 'display'=>true,
-                'text'=>'Intervention par Equipe'
+                'text'=>'Interventions par Equipe'
             ],
             'tooltip' => [
                 'enabled' => true,
@@ -112,7 +114,19 @@ class DashboardController extends Controller
             ],
             'responsive' => true,
             'maintainAspectRatio' => false, // Pour ajuster la hauteur du graphe
-            'cutout' => '80%', // Pour ajuster la largeur des arcs
+            'cutout' => '80%',
+            'plotOptions'=>[
+                'doughnut'=>[
+                    'cutoutPercentage'=>8,
+                    'center'=>[
+                        'text'=>'Interventions par équipe',
+                        'color'=>'#000000',
+                    ],
+                    'dataLabels'=>[
+                        'enabled'=>true
+                    ],
+                ],
+                ], // Pour ajuster la largeur des arcs
         ],true);
          return $interventionByEquipe;
      }
@@ -134,8 +148,8 @@ class DashboardController extends Controller
          $colors = array_map(function() {
             return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
         }, $labels);
-        $interventionByType->dataset('interventions par type','pie',array_values($result))->color($colors);  
-         $interventionByType->title('Intervention par Type');
+        $interventionByType->dataset('interventions','pie',array_values($result))->color($colors);  
+         $interventionByType->title('Interventions par Type');
          $interventionByType->options([
             'width'=>'100%',
             // 'series'=>[
@@ -174,14 +188,17 @@ class DashboardController extends Controller
         $colors = array_map(function() {
             return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
         }, $labels);
-        $vehiculeByIntervention->dataset('véhicule utilisé','pie',array_values($data))->color($colors);  
+        $vehiculeByIntervention->dataset('percentage','pie',array_values($data))->color($colors);  
         $vehiculeByIntervention->title('Véhicule utilisé');
         $vehiculeByIntervention->displayLegend(true);
+        $vehiculeByIntervention->height(300);
         $vehiculeByIntervention->options([
-            'options3d'=>[
-                'enabled'=>true,
-                'alpha'=>45,
-                'beta'=>0,
+            'chart'=>[
+                'options3d'=>[
+                    'enabled'=>true,
+                    'alpha'=>0,
+                    'beta'=>90,
+                ],
             ],
             'tooltip'=>[
                     'valueSuffix'=>'%'
@@ -189,21 +206,172 @@ class DashboardController extends Controller
             'plotOptions'=>[
                 'pie'=>[
                     'allowPointSelect'=>true,
-                    'cursor'=>'pointer',
-                    'depth'=>35,
-                    'dataLabels'=>[
-                        'enabled'=> true,
-                    ]
-                ]
-            ],
+                    'width'=>'100%'
+
+                ],
+                ],
+                
         ]);
         return $vehiculeByIntervention;
     }
+    public function getPercentageByProductCategory()
+    {
+        // Récupérer le nombre total d'enregistrements dans la table intervention_produit
+        $totalInterventions = DB::table('intervention_produit')->count();
+    
+        // Récupérer le nombre d'interventions par catégorie de produit
+        $categories = DB::table('intervention_produit')
+            ->join('produits', 'intervention_produit.produit_id', '=', 'produits.id')
+            ->join('categories', 'produits.categorie_id', '=', 'categories.id')
+            ->select('categories.libelle as categorie', DB::raw('COUNT(categories.id) as total_interventions'))
+            ->groupBy('categories.id', 'categories.libelle')
+            ->get();
+    
+        // Calculer les pourcentages
+        $data = [];
+        foreach ($categories as $category) {
+            $percentage = $totalInterventions > 0 ? round(($category->total_interventions / $totalInterventions) * 100,0) : 0;
+            // number_format($percentage,4);
+            $data[$category->categorie] = $percentage;
+        }
 
+        $percentageByProductCategory=new PercentageByProductCategory();
+        $labels=array_keys($data);
+        $percentageByProductCategory->labels($labels);
+        $colors = array_map(function() {
+            return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+        }, $labels);
+        $percentageByProductCategory->dataset('percentage','pie',array_values($data))->color($colors);  
+        $percentageByProductCategory->title('Nature des interventions');
+        $percentageByProductCategory->displayLegend(true);
+        $percentageByProductCategory->height(300);
+        $percentageByProductCategory->options([
+            'chart'=>[
+                'options3d'=>[
+                    'enabled'=>true,
+                    'alpha'=>0,
+                    'beta'=>90,
+                ],
+            ],
+            'tooltip'=>[
+                    'valueSuffix'=>'%'
+            ],
+            'plotOptions'=>[
+                'pie'=>[
+                    'allowPointSelect'=>true,
+                ],
+                ],
+                
+        ]);
+        return $percentageByProductCategory;
+    }
+    public function getPaymentStatusPercentages()
+{
+    // Récupérer le nombre total d'interventions
+    $totalInterventions = Intervention::count();
+
+    // Récupérer le nombre d'interventions payées
+    $paidCount = Intervention::where('statut_fact', true)->count();
+
+    // Récupérer le nombre d'interventions non payées
+    $unpaidCount = Intervention::where('statut_fact', false)->count();
+
+    // Calculer les pourcentages
+    $paidPercentage = $totalInterventions > 0 ? round(($paidCount / $totalInterventions) * 100) : 0;
+    $unpaidPercentage = $totalInterventions > 0 ? round(($unpaidCount / $totalInterventions) * 100) : 0;
+
+    // Retourner un tableau associatif
+    $data= [
+        'Payé' => $paidPercentage,
+        'Non Payé' => $unpaidPercentage,
+    ];
+    $statutFacturation=new StatutFacturation();
+    $labels=array_keys($data);
+    $statutFacturation->labels($labels);
+    $statutFacturation->dataset('percentage','pie',array_values($data))->color(['green','red']);  
+    $statutFacturation->title('Statut de Facturation');
+    $statutFacturation->displayLegend(true);
+    $statutFacturation->height(300);
+    $statutFacturation->options([
+        'chart'=>[
+            'options3d'=>[
+                'enabled'=>true,
+                'alpha'=>0,
+                'beta'=>90,
+            ],
+        ],
+        'tooltip'=>[
+                'valueSuffix'=>'%'
+        ],
+        'plotOptions'=>[
+            'pie'=>[
+                'allowPointSelect'=>true,
+            ],
+            ],
+            
+    ]);
+    return $statutFacturation;
+}
+
+public function getClientCountByProduct()
+{
+    // Récupérer les données avec une jointure sur les tables nécessaires
+    $clientCountByProduct = DB::table('intervention_produit')
+        ->rightJoin('produits', 'intervention_produit.produit_id', '=', 'produits.id')
+        ->join('interventions', 'intervention_produit.intervention_id', '=', 'interventions.id')
+        ->join('demandeurs', 'interventions.demandeur_id', '=', 'demandeurs.id')
+        ->join('societes', 'demandeurs.societe_id', '=', 'societes.id')
+        ->select('produits.libelle as produit', DB::raw('COUNT(DISTINCT societes.id) as total_clients'))
+        ->groupBy('produits.id', 'produits.libelle')
+        ->get();
+
+    // Transformer les résultats en un tableau associatif
+    $data = [];
+    foreach ($clientCountByProduct as $item) {
+        $data[$item->produit] = $item->total_clients;
+    }
+
+    return $data;
+}
+public function getTop3Clients()
+{
+    $top3Clients = DB::table('interventions')
+        ->join('demandeurs', 'interventions.demandeur_id', '=', 'demandeurs.id')
+        ->join('societes', 'demandeurs.societe_id', '=', 'societes.id')
+        ->select('societes.nom as client', DB::raw('COUNT(interventions.id) as total_interventions'))
+        ->groupBy('societes.id', 'societes.nom')
+        ->orderByDesc('total_interventions')
+        ->limit(3)
+        ->get();
+
+    // Transformer les résultats en un tableau associatif
+    $result = [];
+    foreach ($top3Clients as $item) {
+        $result[$item->client] = $item->total_interventions;
+    }
+
+    return $result;
+}
+public function getInterventionsByChauffeur()
+{
+    // Récupérer les données avec une jointure à gauche pour inclure toutes les interventions
+    $interventionsParChauffeur = DB::table('interventions')
+        ->rightJoin('chauffeurs', 'interventions.chauffeur_id', '=', 'chauffeurs.id')
+        ->select('chauffeurs.nom as chauffeur', DB::raw('COUNT(interventions.id) as total_interventions'))
+        ->groupBy('chauffeurs.id', 'chauffeurs.nom')
+        ->get();
+
+    // Transformer les résultats en un tableau associatif
+    $result = [];
+    foreach ($interventionsParChauffeur as $item) {
+        $result[$item->chauffeur] = $item->total_interventions;
+    }
+
+    return $result;
+}
     public function index()
     {
-        
-
+        dd($this->getInterventionsByChauffeur());
         $clientsExigeants = Demandeur::withCount('interventions')
         ->orderBy('interventions_count', 'desc')
         ->take(3)
@@ -221,7 +389,10 @@ class DashboardController extends Controller
         $interventionByType=$this->getInterventionByType();
         $height=300+ User::count()*2;
         $vehiculeByIntervention=$this->getVehicleUsagePercentage();
-        return view('admin.dashboard', compact('vehiculeByIntervention','height','interventionByType','interventionByEquipe','interventionByConsultant','nombreInterventions', 'nombreClientsTraites', 'nombreConsultants', 'nombreEquipes'));
+        $percentageByProductCategory=$this->getPercentageByProductCategory();
+        $statutFacturation=$this->getPaymentStatusPercentages();
+        return view('admin.dashboard', 
+        compact('statutFacturation','percentageByProductCategory','vehiculeByIntervention','height','interventionByType','interventionByEquipe','interventionByConsultant','nombreInterventions', 'nombreClientsTraites', 'nombreConsultants', 'nombreEquipes'));
     }
     
 

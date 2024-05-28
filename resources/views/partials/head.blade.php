@@ -38,7 +38,6 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
 
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
-<script src="{{ asset('assets/js/highcharts-3d.js') }}"></script>
 
 
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/timepicker.css') }}">
