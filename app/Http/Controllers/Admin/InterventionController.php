@@ -12,6 +12,7 @@ use App\Models\FaitGenerateur;
 use App\Models\TypeIntervention;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InterventionRequest;
+use App\Models\Chauffeur;
 use App\Models\Vehicule;
 
 class InterventionController extends Controller
@@ -30,7 +31,7 @@ class InterventionController extends Controller
      */
     public function create()
     {
-        return view('admin.intervention.form',['intervention'=>new Intervention(),'vehicules'=>Vehicule::all(),'chauffeurs'=>Vehicule::all(),'consultants'=>User::all(),'faitsgenerateurs'=>FaitGenerateur::all(),'demandeurs'=>Demandeur::all(),'typesdemandes'=>TypeDemande::all(),'typesinterventions'=>TypeIntervention::all(),'produits'=>Produit::all()]);
+        return view('admin.intervention.form',['intervention'=>new Intervention(),'vehicules'=>Vehicule::all(),'chauffeurs'=>Chauffeur::all(),'consultants'=>User::all(),'faitsgenerateurs'=>FaitGenerateur::all(),'demandeurs'=>Demandeur::all(),'typesdemandes'=>TypeDemande::all(),'typesinterventions'=>TypeIntervention::all(),'produits'=>Produit::all()]);
     }
 
     /**
@@ -59,7 +60,7 @@ class InterventionController extends Controller
      */
     public function edit(Intervention $intervention)
     {
-        return view('admin.intervention.form',['intervention'=>$intervention,'vehicules'=>Vehicule::all(),'chauffeurs'=>Vehicule::all(),'consultants'=>User::all(),'faitsgenerateurs'=>FaitGenerateur::all(),'demandeurs'=>Demandeur::all(),'typesdemandes'=>TypeDemande::all(),'typesinterventions'=>TypeIntervention::all(),'produits'=>Produit::all()]);
+        return view('admin.intervention.form',['intervention'=>$intervention,'vehicules'=>Vehicule::all(),'chauffeurs'=>Chauffeur::all(),'consultants'=>User::all(),'faitsgenerateurs'=>FaitGenerateur::all(),'demandeurs'=>Demandeur::all(),'typesdemandes'=>TypeDemande::all(),'typesinterventions'=>TypeIntervention::all(),'produits'=>Produit::all()]);
     }
 
     /**

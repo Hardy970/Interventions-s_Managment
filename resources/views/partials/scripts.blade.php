@@ -26,6 +26,7 @@
   {{-- <script src="{{ asset('assets/js/form-validation-custom.js') }}"></script> --}}
   {{-- <script src="{{ asset('assets/js/bookmark/jquery.validate.min.js') }}"></script> --}}
   {{-- <script src="{{ asset('assets/js/contacts/custom.js')}}"></script> --}}
+  <script src="{{ asset('assets/js/general-widget.js') }}"></script>
 
   <!-- Plugins JS Ends-->
   <!-- Theme js-->
@@ -86,3 +87,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.6/highcharts.js" charset="utf-8"></script>
     <script src="{{ asset('assets/js/highcharts-3d.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+

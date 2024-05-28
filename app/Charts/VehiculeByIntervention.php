@@ -3,10 +3,8 @@
 namespace App\Charts;
 
 use ConsoleTVs\Charts\Classes\Highcharts\Chart;
-// use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
-
-class InterventionByConsultant extends Chart
+class VehiculeByIntervention extends Chart
 {
     /**
      * Initializes the chart.
