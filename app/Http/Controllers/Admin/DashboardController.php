@@ -8,14 +8,19 @@ use App\Models\Societe;
 use App\Models\Demandeur;
 use App\Models\Intervention;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Charts\ClientByProduct;
+use App\Charts\StatutFacturation;
 use App\Charts\InterventionByType;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Charts\InterventionByConsultant;
+use App\Charts\InterventonByClient;
 use App\Charts\InterventionByEquipe;
-use App\Charts\PercentageByProductCategory;
-use App\Charts\StatutFacturation;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\FilterRequest;
+use App\Charts\InterventonByChauffeur;
 use App\Charts\VehiculeByIntervention;
+use App\Charts\InterventionByConsultant;
+use App\Charts\PercentageByProductCategory;
 
 class DashboardController extends Controller
 {
@@ -24,21 +29,31 @@ class DashboardController extends Controller
      */
 
 
-     public function getInterventionsByConsultant()
+     public function getInterventionsByConsultant($dateDebut = null, $dateFin = null)
      {
-         // Récupérer les données avec une jointure sur la table pivot
-         $interventionsParConsultant = DB::table('intervention_user')
-             ->rightJoin('users', 'intervention_user.user_id', '=', 'users.id')
-             ->select('users.id', DB::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'), DB::raw('COUNT(intervention_user.intervention_id) as total_interventions'))
-             ->groupBy('users.id', 'full_name')
-             ->orderBy('total_interventions','desc')
-             ->get();
-     
+        $interventionsParConsultant = DB::table('users')
+        ->leftJoin('intervention_user', 'users.id', '=', 'intervention_user.user_id')
+        ->leftJoin('interventions', 'intervention_user.intervention_id', '=', 'interventions.id');
+        
+        if ($dateDebut && $dateFin) {
+        $interventionsParConsultant = $interventionsParConsultant->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+        }
+        
+        $interventionsParConsultant = $interventionsParConsultant
+        ->select(
+            'users.id', 
+            DB::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'), 
+            DB::raw('COUNT(intervention_user.intervention_id) as total_interventions')
+        )
+        ->groupBy('users.id', 'full_name')
+        ->orderBy('total_interventions', 'desc')
+        ->get();
          // Transformer les données en un tableau avec le nom complet comme clé
          $result = [];
          foreach ($interventionsParConsultant as $item) {
              $result[$item->full_name] = $item->total_interventions;
          }
+         dd($result);
          $interventionByConsultant=new InterventionByConsultant();
         $interventionByConsultant->labels(array_keys($result));
         $interventionByConsultant->dataset('interventions','bar',array_values($result));
@@ -98,36 +113,27 @@ class DashboardController extends Controller
          $colors = array_map(function() {
             return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
         }, $labels);
-         $interventionByEquipe->dataset('interventions par équipe','doughnut',array_values($result))->backgroundColor($colors);  
-         $interventionByEquipe->displayLegend(true);
-         $interventionByEquipe->displayAxes(false);
+         $interventionByEquipe->dataset('interventions par équipe','pie',array_values($result))->color($colors);  
+         $interventionByEquipe->title('Interventions par Equipe');
+         $interventionByEquipe->doughnut(70);
+         $interventionByEquipe->height(300);
          $interventionByEquipe->options([
-            'title'=>[
-                'display'=>true,
-                'text'=>'Interventions par Equipe'
-            ],
-            'tooltip' => [
-                'enabled' => true,
-                'mode' => 'nearest', // Mode d'affichage des tooltips
-                'intersect' => false,
-                'external' => 'displayTooltip' // Fonction personnalisée pour afficher les tooltips
-            ],
-            'responsive' => true,
-            'maintainAspectRatio' => false, // Pour ajuster la hauteur du graphe
-            'cutout' => '80%',
-            'plotOptions'=>[
-                'doughnut'=>[
-                    'cutoutPercentage'=>8,
-                    'center'=>[
-                        'text'=>'Interventions par équipe',
-                        'color'=>'#000000',
-                    ],
-                    'dataLabels'=>[
-                        'enabled'=>true
-                    ],
+            'chart'=>[
+                'options3d'=>[
+                    'enabled'=>true,
+                    'alpha'=>45,
+                    'beta'=>0,
                 ],
-                ], // Pour ajuster la largeur des arcs
-        ],true);
+            ],
+            'plotOptions'=>[
+                'pie'=>[
+                    'allowPointSelect'=>true,
+                    'depth'=>35
+
+                ],
+                ],
+                
+        ]);
          return $interventionByEquipe;
      }
      function getInterventionByType()
@@ -150,15 +156,8 @@ class DashboardController extends Controller
         }, $labels);
         $interventionByType->dataset('interventions','pie',array_values($result))->color($colors);  
          $interventionByType->title('Interventions par Type');
-         $interventionByType->options([
-            'width'=>'100%',
-            // 'series'=>[
-            //     'width'=>'50%',
-            // ],
-            // 'colorByPoint'=>true,
-            'cutout'=>'90%'
-            ]);
-         $interventionByType->doughnut(50);
+        
+         $interventionByType->doughnut(70);
          $interventionByType->height(300+ User::count()*2);
          return $interventionByType;
      }
@@ -185,9 +184,7 @@ class DashboardController extends Controller
         $vehiculeByIntervention=new VehiculeByIntervention();
         $labels=array_keys($data);
         $vehiculeByIntervention->labels($labels);
-        $colors = array_map(function() {
-            return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
-        }, $labels);
+        $colors = ['#952323','#F8BDEB'];
         $vehiculeByIntervention->dataset('percentage','pie',array_values($data))->color($colors);  
         $vehiculeByIntervention->title('Véhicule utilisé');
         $vehiculeByIntervention->displayLegend(true);
@@ -196,8 +193,8 @@ class DashboardController extends Controller
             'chart'=>[
                 'options3d'=>[
                     'enabled'=>true,
-                    'alpha'=>0,
-                    'beta'=>90,
+                    'alpha'=>45,
+                    'beta'=>0,
                 ],
             ],
             'tooltip'=>[
@@ -206,7 +203,7 @@ class DashboardController extends Controller
             'plotOptions'=>[
                 'pie'=>[
                     'allowPointSelect'=>true,
-                    'width'=>'100%'
+                    'depth'=>35
 
                 ],
                 ],
@@ -238,21 +235,12 @@ class DashboardController extends Controller
         $percentageByProductCategory=new PercentageByProductCategory();
         $labels=array_keys($data);
         $percentageByProductCategory->labels($labels);
-        $colors = array_map(function() {
-            return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
-        }, $labels);
+        $colors = ['#01204E','#F6DCAC','#028391','#FEAE6F'];
         $percentageByProductCategory->dataset('percentage','pie',array_values($data))->color($colors);  
         $percentageByProductCategory->title('Nature des interventions');
         $percentageByProductCategory->displayLegend(true);
         $percentageByProductCategory->height(300);
         $percentageByProductCategory->options([
-            'chart'=>[
-                'options3d'=>[
-                    'enabled'=>true,
-                    'alpha'=>0,
-                    'beta'=>90,
-                ],
-            ],
             'tooltip'=>[
                     'valueSuffix'=>'%'
             ],
@@ -293,13 +281,6 @@ class DashboardController extends Controller
     $statutFacturation->displayLegend(true);
     $statutFacturation->height(300);
     $statutFacturation->options([
-        'chart'=>[
-            'options3d'=>[
-                'enabled'=>true,
-                'alpha'=>0,
-                'beta'=>90,
-            ],
-        ],
         'tooltip'=>[
                 'valueSuffix'=>'%'
         ],
@@ -318,9 +299,9 @@ public function getClientCountByProduct()
     // Récupérer les données avec une jointure sur les tables nécessaires
     $clientCountByProduct = DB::table('intervention_produit')
         ->rightJoin('produits', 'intervention_produit.produit_id', '=', 'produits.id')
-        ->join('interventions', 'intervention_produit.intervention_id', '=', 'interventions.id')
-        ->join('demandeurs', 'interventions.demandeur_id', '=', 'demandeurs.id')
-        ->join('societes', 'demandeurs.societe_id', '=', 'societes.id')
+        ->leftJoin('interventions', 'intervention_produit.intervention_id', '=', 'interventions.id')
+        ->leftJoin('demandeurs', 'interventions.demandeur_id', '=', 'demandeurs.id')
+        ->leftJoin('societes', 'demandeurs.societe_id', '=', 'societes.id')
         ->select('produits.libelle as produit', DB::raw('COUNT(DISTINCT societes.id) as total_clients'))
         ->groupBy('produits.id', 'produits.libelle')
         ->get();
@@ -330,14 +311,55 @@ public function getClientCountByProduct()
     foreach ($clientCountByProduct as $item) {
         $data[$item->produit] = $item->total_clients;
     }
+    $clientByProduct= new ClientByProduct();
+    $labels=array_keys($data);
+    $clientByProduct->labels($labels);
+    $clientByProduct->dataset('nombre de clients','column',array_values($data))->color('#FF9A00');  
+    $clientByProduct->options([
+        'chart'=> [
+            'options3d'=> [
+                'enabled'=> true,
+                'alpha'=> 15,
+                'beta'=> 15,
+                'depth'=> 50,
+                'viewDistance'=> 25
+    ]
+    ],
+        'yAxis'=>[
+            'title' => [
+                'text' => null,
+            ],
+            'show'=>false,
+            'labels'=>[
+                'enabled'=>false
+            ],               
+        ],
+        'xAxis'=>[
+            'show'=>false,
+            'title' => [
+                'text' => null,
+            ],
 
-    return $data;
+        ],
+        'plotOptions'=> [
+            'column'=> [
+              'depth'=> 45,
+              'dataLabels'=>[
+                    'enabled'=>true
+              ]
+            ],
+        ],
+    ],false);
+    $clientByProduct->title('Nombre de Client par Produit');
+    $clientByProduct->displayLegend(false);
+    $clientByProduct->height(300);
+    return $clientByProduct;
 }
 public function getTop3Clients()
 {
     $top3Clients = DB::table('interventions')
         ->join('demandeurs', 'interventions.demandeur_id', '=', 'demandeurs.id')
-        ->join('societes', 'demandeurs.societe_id', '=', 'societes.id')
+        ->rightJoin('societes', 'demandeurs.societe_id', '=', 'societes.id')
         ->select('societes.nom as client', DB::raw('COUNT(interventions.id) as total_interventions'))
         ->groupBy('societes.id', 'societes.nom')
         ->orderByDesc('total_interventions')
@@ -345,12 +367,54 @@ public function getTop3Clients()
         ->get();
 
     // Transformer les résultats en un tableau associatif
-    $result = [];
+    $data = [];
     foreach ($top3Clients as $item) {
-        $result[$item->client] = $item->total_interventions;
+        $data[$item->client] = $item->total_interventions;
     }
 
-    return $result;
+    $interventionByClient= new InterventonByClient();
+    $labels=array_keys($data);
+    $interventionByClient->labels($labels);
+    $interventionByClient->dataset('interventions','bar',array_values($data))->color("#68D2E8");  
+    $interventionByClient->title('Les 3 Clients exigeants');
+    $interventionByClient->displayLegend(false);
+    $interventionByClient->height(300);
+    $interventionByClient->options([
+        'chart'=> [
+            'options3d'=> [
+                'enabled'=> true,
+                'alpha'=> 15,
+                'beta'=> 15,
+                'depth'=> 50,
+                'viewDistance'=> 35
+    ]
+    ],
+        'yAxis'=>[
+            'title' => [
+                'text' => null,
+            ],
+            'show'=>false,
+            'labels'=>[
+                'enabled'=>false
+            ],               
+        ],
+        'xAxis'=>[
+            'show'=>false,
+            'title' => [
+                'text' => null,
+            ],
+
+        ],
+        'plotOptions'=> [
+            'bar'=> [
+              'depth'=> 45,
+              'dataLabels'=>[
+                    'enabled'=>true
+              ]
+            ],
+        ],
+    ],false);
+    return $interventionByClient;
 }
 public function getInterventionsByChauffeur()
 {
@@ -362,21 +426,84 @@ public function getInterventionsByChauffeur()
         ->get();
 
     // Transformer les résultats en un tableau associatif
-    $result = [];
+    $data = [];
     foreach ($interventionsParChauffeur as $item) {
-        $result[$item->chauffeur] = $item->total_interventions;
+        $data[$item->chauffeur] = $item->total_interventions;
     }
 
-    return $result;
+    $interventionByChauffeur= new InterventonByChauffeur();
+    $labels=array_keys($data);
+    $interventionByChauffeur->labels($labels);
+    $interventionByChauffeur->dataset('interventions','bar',array_values($data))->color("#AD88C6");  
+    $interventionByChauffeur->title('Interventions par chauffeur');
+    $interventionByChauffeur->displayLegend(false);
+    $interventionByChauffeur->height(300);
+    $interventionByChauffeur->options([
+        'chart'=> [
+            'options3d'=> [
+                'enabled'=> true,
+                'alpha'=> 15,
+                'beta'=> 15,
+                'depth'=> 50,
+                'viewDistance'=> 35
+    ]
+    ],
+        'yAxis'=>[
+            'title' => [
+                'text' => null,
+            ],
+            'show'=>false,
+            'labels'=>[
+                'enabled'=>false
+            ],               
+        ],
+        'xAxis'=>[
+            'show'=>false,
+            'title' => [
+                'text' => null,
+            ],
+
+        ],
+        'plotOptions'=> [
+            'bar'=> [
+              'depth'=> 45,
+              'dataLabels'=>[
+                    'enabled'=>true
+              ]
+            ],
+        ],
+    ],false);
+    return $interventionByChauffeur;
 }
-    public function index()
+    public function index(FilterRequest $request)
     {
-        dd($this->getInterventionsByChauffeur());
-        $clientsExigeants = Demandeur::withCount('interventions')
-        ->orderBy('interventions_count', 'desc')
-        ->take(3)
-        ->get();
-        $nombreInterventions = Intervention::count();
+        $dateDebut = $request->input('date_debut');
+        $dateFin =$request->input('date_fin');
+        $dateDebut = $dateDebut ? Carbon::createFromFormat('d/m/Y',$dateDebut)->format('Y/m/d'):null;
+        $dateFin = $dateFin ? Carbon::createFromFormat('d/m/Y',$dateFin)->format('Y/m/d'):null;
+
+        if($dateDebut && $dateFin)
+        {
+        $nombreInterventions = Intervention::whereBetween('date_debut', [$dateDebut, $dateFin])->count();
+
+        $nombreClientsTraites = Societe::count();
+
+        $nombreConsultants = User::count();
+
+        $nombreEquipes = Equipe::count();
+
+        $interventionByConsultant= $this->getInterventionsByConsultant($dateDebut,$dateFin);
+        $interventionByEquipe= $this->getInterventionsByTeam();
+        $interventionByType=$this->getInterventionByType();
+        $vehiculeByIntervention=$this->getVehicleUsagePercentage();
+        $percentageByProductCategory=$this->getPercentageByProductCategory();
+        $statutFacturation=$this->getPaymentStatusPercentages();
+        $clientByProduct=$this->getClientCountByProduct();
+        $interventionByChauffeur=$this->getInterventionsByChauffeur();
+        $clientsExigeants=$this->getTop3Clients();
+        }
+        else{
+            $nombreInterventions = Intervention::count();
 
         $nombreClientsTraites = Societe::count();
 
@@ -387,60 +514,19 @@ public function getInterventionsByChauffeur()
         $interventionByConsultant= $this->getInterventionsByConsultant();
         $interventionByEquipe= $this->getInterventionsByTeam();
         $interventionByType=$this->getInterventionByType();
-        $height=300+ User::count()*2;
         $vehiculeByIntervention=$this->getVehicleUsagePercentage();
         $percentageByProductCategory=$this->getPercentageByProductCategory();
         $statutFacturation=$this->getPaymentStatusPercentages();
+        $clientByProduct=$this->getClientCountByProduct();
+        $interventionByChauffeur=$this->getInterventionsByChauffeur();
+        $clientsExigeants=$this->getTop3Clients();
+        }
+        
+        $height=300+ User::count()*2;
         return view('admin.dashboard', 
-        compact('statutFacturation','percentageByProductCategory','vehiculeByIntervention','height','interventionByType','interventionByEquipe','interventionByConsultant','nombreInterventions', 'nombreClientsTraites', 'nombreConsultants', 'nombreEquipes'));
+        compact('clientByProduct','clientsExigeants','interventionByChauffeur','statutFacturation','percentageByProductCategory','vehiculeByIntervention','height','interventionByType','interventionByEquipe','interventionByConsultant','nombreInterventions', 'nombreClientsTraites', 'nombreConsultants', 'nombreEquipes'));
     }
+
+
     
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

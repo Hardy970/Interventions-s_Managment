@@ -25,7 +25,7 @@
                     <div class=" form-group">
                     <label>Date de demande</label>
                     <div class="input-group">
-                      <input name="date_demande" value="{{ old('date_demande',$intervention->getDateDemande()) }}"   class="datepicker-here form-control digits" type="text" data-language="en">
+                      <input name="date_demande" autocomplete="off" value="{{ old('date_demande',$intervention->getDateDemande()) }}"   class="datepicker-here form-control digits" type="text" data-language="en">
                     </div>
                     @error('date_demande')
                     <div>
@@ -235,7 +235,7 @@
                     <div class=" form-group">
                       <label>Heure de départ du bureau :</label>
                       <div class="input-group clockpicker pull-center"  data-autoclose="true">
-                        <input class="form-control" name="h_depart_b" type="text" value="{{ old('h_depart_b', Intervention::getHour($intervention->h_depart_b) ) }}" ><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                        <input class="form-control" name="h_depart_b" autocomplete="off" type="text" value="{{ old('h_depart_b', Intervention::getHour($intervention->h_depart_b) ) }}" ><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
                       </div>
                       @error('h_depart_b')
                       <div>
@@ -248,7 +248,7 @@
                     <div class=" form-group">
                       <label>Heure d'arrivée chez le client :</label>
                       <div class="input-group clockpicker pull-center"  data-autoclose="true">
-                        <input class="form-control" name="h_arrivee_c" value="{{ old('h_arrivee_c',Intervention::getHour($intervention->h_arrivee_c)) }}" type="text"><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                        <input class="form-control" name="h_arrivee_c" autocomplete="off" value="{{ old('h_arrivee_c',Intervention::getHour($intervention->h_arrivee_c)) }}" type="text"><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
                       </div>
                       @error('h_arrivee_c')
                       <div>
@@ -261,7 +261,7 @@
                     <div class=" form-group">
                       <label>Heure de départ chez le client :</label>
                       <div class="input-group clockpicker pull-center"  data-autoclose="true">
-                        <input class="form-control" name="h_depart_c" value="{{ old('h_depart_c',Intervention::getHour($intervention->h_depart_c)) }}" type="text"><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                        <input class="form-control" name="h_depart_c" autocomplete="off" value="{{ old('h_depart_c',Intervention::getHour($intervention->h_depart_c)) }}" type="text"><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
                       </div>
                       @error('h_depart_c')
                       <div>
@@ -274,7 +274,7 @@
                     <div class=" form-group">
                       <label>Heure de rentrée au bureau :</label>
                       <div class="input-group clockpicker pull-center" data-autoclose="true">
-                        <input class="form-control" name="h_arrivee_b" value="{{ old('h_arrivee_b',Intervention::getHour($intervention->h_arrivee_b)) }}" type="text" ><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                        <input class="form-control" name="h_arrivee_b" autocomplete="off" value="{{ old('h_arrivee_b',Intervention::getHour($intervention->h_arrivee_b)) }}" type="text" ><span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
                       </div>
                       @error('h_arrivee_b')
                       <div>
@@ -292,7 +292,7 @@
                     <div class=" form-group">
                       <label>Date de début :</label>
                       <div class="input-group">
-                        <input name="date_debut" value="{{ old('date_debut',$intervention->getDateDebut()) }}" class="datepicker-here form-control digits" type="text" data-language="en">
+                        <input name="date_debut" value="{{ old('date_debut',$intervention->getDateDebut()) }}" autocomplete="off" class="datepicker-here form-control digits" type="text" data-language="en">
                       </div>
                       @error('date_debut')
                       <div>
@@ -306,7 +306,7 @@
                     <div class=" form-group">
                       <label>Date de fin :</label>
                       <div class="input-group">
-                        <input name="date_fin" value="{{ old('date_fin',$intervention->getDateFin()) }}" class="datepicker-here form-control digits" type="text" data-language="en">
+                        <input name="date_fin" autocomplete="off" value="{{ old('date_fin',$intervention->getDateFin()) }}" class="datepicker-here form-control digits" type="text" data-language="en">
                       </div>
                       @error('date_fin')
                       <div>

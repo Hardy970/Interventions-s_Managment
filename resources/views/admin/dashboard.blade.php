@@ -59,6 +59,44 @@
       </div>
     </div>
     <div class=" col-xl-6 xl-100 box-col-12 mb-4">
+          <form action="" method="GET">
+            <div class="row  ">
+              <div class="col-sm-3">
+                <label>Date de début :</label>
+
+                <div class=" form-group">
+                  <div class="input-group">
+                    <input name="date_debut" value="{{ old('date_debut',request('date_debut')) }}" class="datepicker-here form-control digits" autocomplete="off" type="text" data-language="en">
+                  </div>
+                  @error('date_debut')
+                  <div>
+                    <span class="text-danger fw-bold "> {{ $message }} </span>
+                  </div>
+                  @enderror
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class=" form-group">
+                  <label>Date de fin :</label>
+                  <div class="input-group">
+                    <input name="date_fin" value="{{ old('date_fin',request('date_fin')) }}" autocomplete="off" class="datepicker-here form-control digits" type="text" data-language="en">
+                  </div>
+                  @error('date_fin')
+                  <div>
+                    <span class="text-danger fw-bold "> {{ $message }} </span>
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="col-sm-3">
+             
+                    <button type="submit" class=" btn btn-primary mt-4">Filtrer</button>
+              </div>
+            </div>
+          </form>
+    </div>
+    <div class=" col-xl-6 xl-100 box-col-12 mb-4">
           <div class="row  ">
             <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 " style="min-height: 300px;height: {{ $height }}px" >
               {{ $interventionByType->container() }}
@@ -71,9 +109,9 @@
             </div>
           </div>
     </div>
-    <div class=" col-xl-12 xl-100 box-col-12 mb-4">
+    <div class=" col-xl-6 xl-100 box-col-12 mb-4">
       <div class="row  ">
-        <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 bg-white" style="min-height: 300px;height: 300px" >
+        <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6" style="min-height: 300px;height: 300px" >
           {{ $interventionByEquipe->container() }}
           {{ $interventionByEquipe->script() }}
         </div>
@@ -87,41 +125,39 @@
     </div>
     <div class=" col-xl-6 xl-100 box-col-12 mb-4">
       <div class="row  ">
-        <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 " style="min-height: 300px;height: {{ $height }}px" >      
+        <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 " style="min-height: 300px;height: 300px" >      
             {{ $percentageByProductCategory->container() }}
             {{ $percentageByProductCategory->script() }}
         </div>
-        <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6  " style=" min-height: 300px;height: {{ $height }}px">  
+        <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6  " style=" min-height: 300px;height: 300px">  
           {{ $statutFacturation->container() }}
           {{ $statutFacturation->script() }}
         </div>
       </div>
-</div>
-        
-  
-      
-      <div class="col-xl-6 xl-100 box-col-12">
-        <div class="card">
-          <div class="cal-date-widget card-body">
-            <div class="row">
-              <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6">
-                <div class="cal-info text-center">
-                  <div>
-                    <h2>24</h2>
-                    <div class="d-inline-block"><span class="b-r-dark pe-3">March</span><span class="ps-3">2018</span></div>
-                    <p class="f-16">There is no minimum donation, any sum is appreciated</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6">
-                <div class="cal-datepicker">
-                  <div class="datepicker-here float-sm-end" data-language="en">           </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    </div>
+    <div class=" col-xl-6 xl-100 box-col-12 mb-4">
+      <div class="row  ">
+        <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 " style="min-height: 300px;height: 300px" >      
+            {{ $clientByProduct->container() }}
+            {{ $clientByProduct->script() }}
+        </div>
+        <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6  " style=" min-height: 300px;height: 300px">  
+          {{ $interventionByChauffeur->container() }}
+          {{ $interventionByChauffeur->script() }}
         </div>
       </div>
+    </div>
+    <div class=" col-xl-6 xl-100 box-col-12 mb-4">
+      <div class="row  ">
+        <div class=" col-xl-6 col-xs-12 col-md-6 col-sm-6 " style="min-height: 300px;height: 300px" >      
+            {{ $clientsExigeants->container() }}
+            {{ $clientsExigeants->script() }}
+        </div>
+        <div class="col-xl-6 col-xs-12 col-md-6 col-sm-6  " style=" min-height: 300px;height: 300px">  
+          
+        </div>
+      </div>
+    </div>
   </div>
   <!-- Container-fluid Ends-->
 
