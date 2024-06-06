@@ -33,18 +33,13 @@ class DashboardController extends Controller
      {
         $interventionsParConsultant = DB::table('users')
         ->leftJoin('intervention_user', 'users.id', '=', 'intervention_user.user_id')
-        ->leftJoin('interventions', 'intervention_user.intervention_id', '=', 'interventions.id');
-        
-        if ($dateDebut && $dateFin) {
-        $interventionsParConsultant = $interventionsParConsultant->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
-        }
-        
-        $interventionsParConsultant = $interventionsParConsultant
-        ->select(
-            'users.id', 
-            DB::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'), 
-            DB::raw('COUNT(intervention_user.intervention_id) as total_interventions')
-        )
+        ->leftJoin('interventions', function ($join) use ($dateDebut, $dateFin) {
+            $join->on('intervention_user.intervention_id', '=', 'interventions.id');
+            if ($dateDebut && $dateFin) {
+                $join->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+            }
+        })
+        ->select('users.id', DB::raw('CONCAT(users.first_name, " ", users.last_name) as full_name'), DB::raw('COUNT(interventions.id) as total_interventions'))
         ->groupBy('users.id', 'full_name')
         ->orderBy('total_interventions', 'desc')
         ->get();
@@ -53,7 +48,7 @@ class DashboardController extends Controller
          foreach ($interventionsParConsultant as $item) {
              $result[$item->full_name] = $item->total_interventions;
          }
-         dd($result);
+        //  dd($result);
          $interventionByConsultant=new InterventionByConsultant();
         $interventionByConsultant->labels(array_keys($result));
         $interventionByConsultant->dataset('interventions','bar',array_values($result));
@@ -93,11 +88,17 @@ class DashboardController extends Controller
      }
 
 
-     function getInterventionsByTeam()
+     function getInterventionsByTeam($dateDebut = null, $dateFin = null)
      {
          $interventionsParEquipe = DB::table('intervention_user')
              ->join('users', 'intervention_user.user_id', '=', 'users.id')
-             ->rightJoin('equipes', 'users.equipe_id', '=', 'equipes.id')
+             ->join('interventions', function ($join) use ($dateDebut, $dateFin) {
+                $join->on('intervention_user.intervention_id', '=', 'interventions.id');
+                if ($dateDebut && $dateFin) {
+                    $join->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+                }
+            })
+            ->rightJoin('equipes', 'users.equipe_id', '=', 'equipes.id')
              ->select(DB::raw('equipes.nom as legende'), DB::raw('COUNT(DISTINCT intervention_user.intervention_id) as total_interventions'))
              ->groupBy('equipes.nom')
              ->get();
@@ -136,18 +137,32 @@ class DashboardController extends Controller
         ]);
          return $interventionByEquipe;
      }
-     function getInterventionByType()
+     function getInterventionByType($dateDebut = null, $dateFin = null)
      {
         $interventionParType= DB::table('intervention_type_intervention')
-        ->rightJoin('type_interventions','intervention_type_intervention.type_intervention_id','=','type_interventions.id')
+        ->join('interventions', function ($join) use ($dateDebut, $dateFin) {
+                $join->on('intervention_type_intervention.intervention_id', '=', 'interventions.id');
+                if ($dateDebut && $dateFin) {
+                    $join->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+                }
+            })
+            ->rightJoin('type_interventions','intervention_type_intervention.type_intervention_id','=','type_interventions.id')
         ->select(DB::raw('type_interventions.libelle as legende'),DB::raw('COUNT( intervention_type_intervention.type_intervention_id) as total'))
         ->groupBy('type_intervention_id','libelle')
         ->get();
+
+        // ->leftJoin('interventions', function ($join) use ($dateDebut, $dateFin) {
+        //     $join->on('intervention_user.intervention_id', '=', 'interventions.id');
+        //     if ($dateDebut && $dateFin) {
+        //         $join->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+        //     }
+        // })
 
         $result = [];
         foreach ($interventionParType as $item) {
             $result[$item->legende] = $item->total;
         }
+        // dd($result);
         $labels=array_keys($result);
          $interventionByType=new InterventionByType();
          $interventionByType->labels($labels);
@@ -161,8 +176,19 @@ class DashboardController extends Controller
          $interventionByType->height(300+ User::count()*2);
          return $interventionByType;
      }
-     public function getVehicleUsagePercentage()
+     public function getVehicleUsagePercentage($dateDebut = null, $dateFin = null)
     {
+            if($dateDebut && $dateFin){
+                            // Récupérer le nombre total d'interventions
+                $totalInterventions = Intervention::whereBetween('date_debut', [$dateDebut, $dateFin])->count();
+
+                // Récupérer le nombre d'interventions avec véhicule de service
+                $serviceVehicleCount = Intervention::whereBetween('date_debut', [$dateDebut, $dateFin])->where('est_vehicule_service', true)->count();
+
+                // Récupérer le nombre d'interventions avec véhicule personnel
+                $personalVehicleCount = Intervention::whereBetween('date_debut', [$dateDebut, $dateFin])->where('est_vehicule_service', false)->count();
+        }
+        else{
         // Récupérer le nombre total d'interventions
         $totalInterventions = Intervention::count();
 
@@ -172,6 +198,8 @@ class DashboardController extends Controller
         // Récupérer le nombre d'interventions avec véhicule personnel
         $personalVehicleCount = Intervention::where('est_vehicule_service', false)->count();
 
+        }
+        
         // Calculer les pourcentages
         $serviceVehiclePercentage = $totalInterventions > 0 ? round(($serviceVehicleCount / $totalInterventions) * 100, 2) : 0;
         $personalVehiclePercentage = $totalInterventions > 0 ? round(($personalVehicleCount / $totalInterventions) * 100, 2) : 0;
@@ -211,13 +239,25 @@ class DashboardController extends Controller
         ]);
         return $vehiculeByIntervention;
     }
-    public function getPercentageByProductCategory()
+    public function getPercentageByProductCategory($dateDebut = null, $dateFin = null)
     {
         // Récupérer le nombre total d'enregistrements dans la table intervention_produit
-        $totalInterventions = DB::table('intervention_produit')->count();
-    
+        if($dateDebut && $dateFin){
+            $totalInterventions = DB::table('intervention_produit')
+            ->join('interventions','intervention_produit.intervention_id', '=', 'interventions.id')
+            ->whereBetween('interventions.date_debut', [$dateDebut, $dateFin])->count();
+        }
+        else{
+            $totalInterventions = DB::table('intervention_produit')->count();
+        }
         // Récupérer le nombre d'interventions par catégorie de produit
         $categories = DB::table('intervention_produit')
+            ->join('interventions', function ($join) use ($dateDebut, $dateFin) {
+                $join->on('intervention_produit.intervention_id', '=', 'interventions.id');
+                if ($dateDebut && $dateFin) {
+                    $join->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+                }
+            })
             ->join('produits', 'intervention_produit.produit_id', '=', 'produits.id')
             ->join('categories', 'produits.categorie_id', '=', 'categories.id')
             ->select('categories.libelle as categorie', DB::raw('COUNT(categories.id) as total_interventions'))
@@ -227,10 +267,12 @@ class DashboardController extends Controller
         // Calculer les pourcentages
         $data = [];
         foreach ($categories as $category) {
+            // dd($category);
             $percentage = $totalInterventions > 0 ? round(($category->total_interventions / $totalInterventions) * 100,0) : 0;
             // number_format($percentage,4);
             $data[$category->categorie] = $percentage;
         }
+
 
         $percentageByProductCategory=new PercentageByProductCategory();
         $labels=array_keys($data);
@@ -253,16 +295,29 @@ class DashboardController extends Controller
         ]);
         return $percentageByProductCategory;
     }
-    public function getPaymentStatusPercentages()
+    public function getPaymentStatusPercentages($dateDebut = null, $dateFin = null)
 {
-    // Récupérer le nombre total d'interventions
-    $totalInterventions = Intervention::count();
+    if($dateDebut && $dateFin){
+        // Récupérer le nombre total d'interventions
+    $totalInterventions = Intervention::whereBetween('interventions.date_debut', [$dateDebut, $dateFin])->count();
 
     // Récupérer le nombre d'interventions payées
-    $paidCount = Intervention::where('statut_fact', true)->count();
+    $paidCount = Intervention::whereBetween('interventions.date_debut', [$dateDebut, $dateFin])->where('statut_fact', true)->count();
 
     // Récupérer le nombre d'interventions non payées
-    $unpaidCount = Intervention::where('statut_fact', false)->count();
+    $unpaidCount = Intervention::whereBetween('interventions.date_debut', [$dateDebut, $dateFin])->where('statut_fact', false)->count();
+        
+    }
+    else{
+            // Récupérer le nombre total d'interventions
+            $totalInterventions = Intervention::count();
+
+            // Récupérer le nombre d'interventions payées
+            $paidCount = Intervention::where('statut_fact', true)->count();
+
+            // Récupérer le nombre d'interventions non payées
+            $unpaidCount = Intervention::where('statut_fact', false)->count();
+    }
 
     // Calculer les pourcentages
     $paidPercentage = $totalInterventions > 0 ? round(($paidCount / $totalInterventions) * 100) : 0;
@@ -270,8 +325,8 @@ class DashboardController extends Controller
 
     // Retourner un tableau associatif
     $data= [
-        'Payé' => $paidPercentage,
-        'Non Payé' => $unpaidPercentage,
+        'Facturé' => $paidPercentage,
+        'Non Facturé' => $unpaidPercentage,
     ];
     $statutFacturation=new StatutFacturation();
     $labels=array_keys($data);
@@ -294,12 +349,17 @@ class DashboardController extends Controller
     return $statutFacturation;
 }
 
-public function getClientCountByProduct()
+public function getClientCountByProduct($dateDebut = null, $dateFin = null)
 {
     // Récupérer les données avec une jointure sur les tables nécessaires
     $clientCountByProduct = DB::table('intervention_produit')
         ->rightJoin('produits', 'intervention_produit.produit_id', '=', 'produits.id')
-        ->leftJoin('interventions', 'intervention_produit.intervention_id', '=', 'interventions.id')
+        ->leftJoin('interventions', function ($join) use ($dateDebut, $dateFin) {
+            $join->on('intervention_produit.intervention_id', '=', 'interventions.id');
+            if ($dateDebut && $dateFin) {
+                $join->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+            }
+        })
         ->leftJoin('demandeurs', 'interventions.demandeur_id', '=', 'demandeurs.id')
         ->leftJoin('societes', 'demandeurs.societe_id', '=', 'societes.id')
         ->select('produits.libelle as produit', DB::raw('COUNT(DISTINCT societes.id) as total_clients'))
@@ -355,11 +415,16 @@ public function getClientCountByProduct()
     $clientByProduct->height(300);
     return $clientByProduct;
 }
-public function getTop3Clients()
+public function getTop3Clients($dateDebut = null, $dateFin = null)
 {
-    $top3Clients = DB::table('interventions')
-        ->join('demandeurs', 'interventions.demandeur_id', '=', 'demandeurs.id')
+    $top3Clients = DB::table('demandeurs')
         ->rightJoin('societes', 'demandeurs.societe_id', '=', 'societes.id')
+        ->leftJoin('interventions', function ($join) use ($dateDebut, $dateFin) {
+            $join->on('demandeurs.id', '=', 'interventions.demandeur_id');
+            if ($dateDebut && $dateFin) {
+                $join->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+            }
+        })
         ->select('societes.nom as client', DB::raw('COUNT(interventions.id) as total_interventions'))
         ->groupBy('societes.id', 'societes.nom')
         ->orderByDesc('total_interventions')
@@ -416,11 +481,16 @@ public function getTop3Clients()
     ],false);
     return $interventionByClient;
 }
-public function getInterventionsByChauffeur()
+public function getInterventionsByChauffeur($dateDebut = null, $dateFin = null)
 {
     // Récupérer les données avec une jointure à gauche pour inclure toutes les interventions
-    $interventionsParChauffeur = DB::table('interventions')
-        ->rightJoin('chauffeurs', 'interventions.chauffeur_id', '=', 'chauffeurs.id')
+    $interventionsParChauffeur = DB::table('chauffeurs')
+        ->leftJoin('interventions', function ($join) use ($dateDebut, $dateFin) {
+            $join->on('chauffeurs.id', '=', 'interventions.chauffeur_id');
+            if ($dateDebut && $dateFin) {
+                $join->whereBetween('interventions.date_debut', [$dateDebut, $dateFin]);
+            }
+        })
         ->select('chauffeurs.nom as chauffeur', DB::raw('COUNT(interventions.id) as total_interventions'))
         ->groupBy('chauffeurs.id', 'chauffeurs.nom')
         ->get();
@@ -475,6 +545,20 @@ public function getInterventionsByChauffeur()
     ],false);
     return $interventionByChauffeur;
 }
+
+        public function getClientsTraites($dateDebut=null, $dateFin=null)
+        {
+                $clientsTraites = DB::table('interventions')
+                ->join('demandeurs', 'interventions.demandeur_id', '=', 'demandeurs.id')
+                ->join('societes', 'demandeurs.societe_id', '=', 'societes.id');
+                if($dateDebut && $dateFin){
+                    $clientsTraites->whereBetween('interventions.date_debut',[$dateDebut,$dateFin]);
+                }
+                $clientsTraites=$clientsTraites
+                ->select( DB::raw('COUNT(DISTINCT societes.id) as clientstraites'))
+                ->first();
+                return $clientsTraites->clientstraites;
+        }
     public function index(FilterRequest $request)
     {
         $dateDebut = $request->input('date_debut');
@@ -486,26 +570,26 @@ public function getInterventionsByChauffeur()
         {
         $nombreInterventions = Intervention::whereBetween('date_debut', [$dateDebut, $dateFin])->count();
 
-        $nombreClientsTraites = Societe::count();
+        $nombreClientsTraites =$this->getClientsTraites($dateDebut,$dateFin);
 
         $nombreConsultants = User::count();
 
         $nombreEquipes = Equipe::count();
 
         $interventionByConsultant= $this->getInterventionsByConsultant($dateDebut,$dateFin);
-        $interventionByEquipe= $this->getInterventionsByTeam();
-        $interventionByType=$this->getInterventionByType();
-        $vehiculeByIntervention=$this->getVehicleUsagePercentage();
-        $percentageByProductCategory=$this->getPercentageByProductCategory();
-        $statutFacturation=$this->getPaymentStatusPercentages();
-        $clientByProduct=$this->getClientCountByProduct();
-        $interventionByChauffeur=$this->getInterventionsByChauffeur();
-        $clientsExigeants=$this->getTop3Clients();
+        $interventionByEquipe= $this->getInterventionsByTeam($dateDebut,$dateFin);
+        $interventionByType=$this->getInterventionByType($dateDebut,$dateFin);
+        $vehiculeByIntervention=$this->getVehicleUsagePercentage($dateDebut,$dateFin);
+        $percentageByProductCategory=$this->getPercentageByProductCategory($dateDebut,$dateFin);
+        $statutFacturation=$this->getPaymentStatusPercentages($dateDebut,$dateFin);
+        $clientByProduct=$this->getClientCountByProduct($dateDebut,$dateFin);
+        $interventionByChauffeur=$this->getInterventionsByChauffeur($dateDebut,$dateFin);
+        $clientsExigeants=$this->getTop3Clients($dateDebut,$dateFin);
         }
         else{
-            $nombreInterventions = Intervention::count();
+        $nombreInterventions = Intervention::count();
 
-        $nombreClientsTraites = Societe::count();
+        $nombreClientsTraites =$this->getClientsTraites();
 
         $nombreConsultants = User::count();
 
