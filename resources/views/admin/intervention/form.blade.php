@@ -25,7 +25,7 @@
                     <div class=" form-group">
                     <label>Date de demande</label>
                     <div class="input-group">
-                      <input name="date_demande" autocomplete="off" value="{{ old('date_demande',$intervention->getDateDemande()) }}"   class="datepicker-here form-control digits" type="text" data-language="en">
+                      <input name="date_demande"  autocomplete="off" value="{{ old('date_demande',$intervention->getDateDemande()) }}"   class="datepicker-here form-control digits" type="text" data-language="en">
                     </div>
                     @error('date_demande')
                     <div>
@@ -94,7 +94,7 @@
                   </div>
                 </div>
               </div>
-              <div class="mb-3 col-md-12 mt-0">
+              {{-- <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
                   <div class="col">
                     <label class=" form-label ">Feedback Client : </label>
@@ -106,7 +106,7 @@
                       @enderror
                   </div>
                 </div>
-              </div>
+              </div> --}}
               <div class="mb-3 col-md-12 mt-0">
                 <div class="row">
                   <div class="col-sm-6">

@@ -19,7 +19,7 @@
                 <div class="row">
                   <div class=" col-md-7">
                     <label>Nom du chauffeur</label>
-                    <input class="form-control" id="con-name" type="text"    value="{{ old('nom',$chauffeur->nom) }}"  name="nom" >
+                    <input class="form-control" id="con-name" autofocus type="text"    value="{{ old('nom',$chauffeur->nom) }}"  name="nom" >
                     @error('nom')
                     <div>
                       <span class="text-danger fw-bold "> {{ $message }} </span>

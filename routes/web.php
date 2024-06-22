@@ -24,6 +24,7 @@ Route::get('/', function () {
 
 Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function(){
     Route::get('dashboard',[DashboardController::class, 'index'])->name('dashboard');
+    Route::get('export',[DashboardController::class, 'exportPdf'])->name('export');
     Route::resource('consultant', ConsultantController::class)->except('show');
     Route::put('consultant/{consultant}/block',[ConsultantController::class,'block'])->name('consultant.block');
     Route::put('consultant/{consultant}/unblock',[ConsultantController::class,'unblock'])->name('consultant.unblock');
@@ -34,12 +35,11 @@ Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function(){
     Route::resource('produit', ProduitController::class)->except('show');
     Route::resource('chauffeur', ChauffeurController::class)->except('show');
     Route::resource('faitgenerateur', FaitGenerateurController::class)->except('show');
-    Route::resource('interventions', InterventionController::class)->except('show');
+    Route::resource('interventions', InterventionController::class);
     Route::resource('typedemande', TypeDemandeController::class)->except('show');
     Route::resource('typeintervention', TypeInterventionController::class)->except('show');
     Route::resource('vehicule', VehiculeController::class)->except('show');
     Route::resource('role', RoleController::class)->except('show');
-
 
 
 });

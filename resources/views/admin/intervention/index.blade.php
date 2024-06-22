@@ -11,7 +11,7 @@
                 <div class="card">
                   <div class="card-header pb-0">
                     <h5>Liste des interventions</h5>
-                    <div class="form-group text-end mb-5">
+                    <div class="form-group text-end my-5">
                       <a class="btn btn-primary " type="button" href="{{ route('admin.interventions.create') }}" >Ajouter une intervention</a>
                     </div>
                     
@@ -25,16 +25,14 @@
                         <thead>
                           <tr>
                             <th>Date de demande</th>
+                            <th>Date de début</th>
+                            <th>Date de fin</th>
                             <th>Types de demande</th>
                             <th>Société</th>
                             <th>Fait générateur</th>
-                            <th>Feedback du client</th>
                             <th>Consultants</th>
                             <th>Produits concernés</th>
                             <th>Type d'intervention</th>
-                            <th>Véhicule utilisé</th>
-                            <th>Nom du chauffeur</th>
-                            <th>Travaux réalisés</th>
                             <th>Statut facturation</th>
                             <th>Action</th>
                           </tr>
@@ -44,6 +42,12 @@
                           <tr>
                             <td>
                               {{ $intervention->getDateDemande() }}
+                            </td>
+                            <td>
+                              {{ $intervention->getDateDebut() }}
+                            </td>
+                            <td>
+                              {{ $intervention->getDateFin() }}
                             </td>
                             <td >
                               @foreach ($intervention->typesdemandes as $typedemande )
@@ -56,9 +60,9 @@
                             <td>
                               {{ $intervention->fait_generateur->libelle }}
                             </td>
-                            <td>
+                            {{-- <td>
                               {{ $intervention->feedback }}
-                            </td>
+                            </td> --}}
                             <td>
                               @foreach ($intervention->consultants as $consultant )
                               {{ $consultant->last_name }} {{ $consultant->first_name }} 
@@ -74,7 +78,7 @@
                               <span id="span" class="badge badge-info mt-1 mx-2">{{ $typesintervention->libelle }} </span>
                               @endforeach
                             </td>
-                            <td>
+                            {{-- <td>
                               @if( !empty($intervention->vehicule) )
                               {{ $intervention->vehicule->matricule }}
                               @endif
@@ -87,22 +91,24 @@
                             </td>
                             <td>
                               {{ $intervention->travaux }}
-                            </td>
+                            </td> --}}
                             <td>
                               @if ($intervention->statut_fact)
-                                <span id="span" class="badge badge-success">Payé</span>
+                                <span id="span" class="badge badge-success">Facturée</span>
                               @else
-                              <span class="badge badge-danger">Non Payé</span>
+                              <span id="span" class="badge badge-danger">Non Facturée</span>
                               @endif
                             </td>
                             <td class=" d-flex gap-1">
                               {{-- <a class="btn btn-danger btn-xs" type="button" href="{{ route('admin.intervention.destroy',['intervention'=>$intervention->id]) }}" data-original-title="btn btn-danger btn-xs" title="">Delete</a> --}}
+                              <a class="btn btn-warning btn-xs" href="{{ route('admin.interventions.show',['intervention'=>$intervention]) }}"  data-original-title="btn btn-secondary btn-xs" title="">Afficher</a>
+                              <a class="btn btn-primary btn-xs" href="{{ route('admin.interventions.edit',['intervention'=>$intervention]) }}"  data-original-title="btn btn-danger btn-xs" title="">Modifier</a>
                               <form action="{{ route('admin.interventions.destroy',['intervention'=>$intervention->id]) }}" method="POST"> 
                                 @csrf
                                 @method('delete')
                                 <button type="submit" style="font-size: 0.71rem" class="btn btn-danger btn-xs text-xs" onclick='return confirm("Etes vous sûr de vouloir supprimer ce intervention ?")' title="">Supprimer</button>
-                            </form>
-                              <a class="btn btn-primary btn-xs" href="{{ route('admin.interventions.edit',['intervention'=>$intervention]) }}"  data-original-title="btn btn-danger btn-xs" title="">Modifier</a>
+                              </form>
+
                             </td>
                           </tr>
                           @endforeach

@@ -121,5 +121,17 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+//     'providers' => [
+//     // ...
+//     Illuminate\Filesystem\FilesystemServiceProvider::class,
+//     Barryvdh\DomPDF\ServiceProvider::class,
+// ],
+
+// 'aliases' => [
+//     'File' => Illuminate\Support\Facades\File::class,
+
+//     // ...
+//     // 'PDF' => Barryvdh\DomPDF\Facade::class,
+// ],
 
 ];

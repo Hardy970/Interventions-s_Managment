@@ -19,7 +19,7 @@
                 <div class="row">
                   <div class="col-sm-8">
                     <label>Libellé du type de demande</label>
-                    <input class="form-control" id="con-name" type="text"   value="{{ old('libelle',$typedemande->libelle) }}"  name="libelle" >
+                    <input class="form-control" id="con-name" type="text" autofocus  value="{{ old('libelle',$typedemande->libelle) }}"  name="libelle" >
                     @error('libelle')
                     <div>
                       <span class="text-danger fw-bold "> {{ $message }} </span>

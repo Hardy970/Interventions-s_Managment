@@ -1213,7 +1213,13 @@ a:hover {
     text-align: center;
     border: 10px solid rgba(36, 105, 92, 0.2);
   }
-
+  .h2-25 {
+    width: 50px ; 
+    margin: auto;
+    height: 50px ;
+    text-align: center;
+    border: 5px solid rgba(36, 105, 92, 0.2);
+  }
 .img-100 {
   width: 100px !important; }
 

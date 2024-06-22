@@ -8,7 +8,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">{{ $consultant->exists?'Modifier un consultant':'Ajouter un consultant' }}</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{{ $consultant->exists?'Modifier un utilisateur':'Ajouter un utilisateur' }}</h5>
         </div>
         <div class="modal-body d-flex flex-column">
           <form class="" id="bookmark-form" method="POST" action=" {{ !$consultant->exists?route('admin.consultant.store'):route('admin.consultant.update',['consultant'=>$consultant ])}}" >

@@ -34,6 +34,8 @@
 <!-- App css-->
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
 <link id="color" rel="stylesheet" href="{{ asset('assets/css/color-1.css') }}" media="screen">
+<link id="color" rel="stylesheet" href="{{ asset('assets/css/color-3.css') }}" media="screen">
+
 <!-- Responsive css-->
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
 
@@ -41,3 +43,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/timepicker.css') }}">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+

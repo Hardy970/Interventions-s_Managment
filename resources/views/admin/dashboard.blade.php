@@ -7,7 +7,14 @@
 @section('content')
 {{-- {!! $chart->script() !!}
 {!! $chart->container() !!} --}}
-<div class="container-fluid general-widget">
+<div  class="container-fluid d-flex justify-end mb-5 ">             
+    <div>
+      <button href="#" id="export-pdf" class=" btn btn-success"> 
+        Exporter
+      </button>
+    </div>
+</div>
+<div class="container-fluid general-widget" id="dashboard">
     <div class="row mb-5" >
       <div class="col-sm-6 col-xl-3 col-lg-6">
         <div class="card o-hidden border-0">

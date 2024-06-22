@@ -1,13 +1,18 @@
 <header class="main-nav">
     <div class="sidebar-user text-center">
       <h3 class="h2-90 pt-3 rounded-circle bg-grey ">{{ substr(Auth::user()->first_name, 0, 1) }} {{substr( Auth::user()->last_name,0,1 )}} </h3> 
+      <div class="badge-bottom"><span class="badge badge-primary">{{ strtoupper( Auth::user()->role->libelle )}}</span></div>
      {{-- <img class="img-90 rounded-circle" src="../assets/images/dashboard/1.png" alt=""> --}}
 
       <a href="{{ route('profile.edit') }}">
         <h6 class="mt-3 f-14 f-w-600">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h6> 
-      </a>
-      <p class="mb-0 font-roboto">{{ strtoupper( Auth::user()->role->libelle )}} </p>
-     
+      </a>     
+      <ul>
+        @if (count(Auth::user()->interventions)> 0)
+        <li><span>{{ count(Auth::user()->interventions) }}</span> Interventions
+        </li>
+        @endif
+      </ul>
     </div>
     <nav>
       <div class="main-navbar">
@@ -18,8 +23,8 @@
               <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
             </li>
             @php
-            $route=request() -> route() -> getName();
-          @endphp
+              $route=request() -> route() -> getName();
+            @endphp
             
             <li class="dropdown"><a  @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'dashboard')]) href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span>Tableau de bord</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'interventions')]) href="{{ route('admin.interventions.index') }}"><span>Interventions</span></a></li>

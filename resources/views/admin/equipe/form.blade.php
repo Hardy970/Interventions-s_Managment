@@ -19,7 +19,7 @@
                 <div class="row">
                   <div class="col-sm-7">
                     <label>Libellé de l'équipe</label>
-                    <input class="form-control" id="con-name" type="text"    value="{{ old('nom',$equipe->nom) }}"  name="nom" >
+                    <input class="form-control" id="con-name" type="text" autofocus   value="{{ old('nom',$equipe->nom) }}"  name="nom" >
                     @error('nom')
                     <div>
                       <span class="text-danger fw-bold "> {{ $message }} </span>
