@@ -23,10 +23,9 @@ class InterventionRequest extends FormRequest
     {
         $timeRegex = '/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/';
         return [
-        'feedback'=>['required','string','min:4'],
-        'date_demande'=>['date','required'],
-        'date_debut'=>['date','required'],
-        'date_fin'=>['date','required'],        
+        'date_demande'=>['required', 'regex:/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/'],
+        'date_debut'=>['required', 'regex:/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/'],
+        'date_fin'=>['required', 'regex:/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/'],        
     	'h_depart_b'=>['regex:'.$timeRegex,'required'],
     	'h_arrivee_b'=>['regex:'.$timeRegex,'required'],
     	'h_arrivee_c'=>['regex:'.$timeRegex,'required'],
@@ -71,9 +70,9 @@ class InterventionRequest extends FormRequest
             'typesdemandes.required' => 'Ce champ est requis.',
             'typesinterventions.required' => 'Ce champ est requis.',
             'consultants.required' => 'Ce champ est requis.',
-            'date_debut.date' => 'Ce champ doit être une date',
-            'date_demande.date' => 'Ce champ doit être une date',
-            'date_fin.date' => 'Ce champ doit être une date',
+            'date_debut.regex' => 'Ce champ doit être une date',
+            'date_demande.regex' => 'Ce champ doit être une date',
+            'date_fin.regex' => 'Ce champ doit être une date',
             'h_depart_b.regex' => 'Entrez une heure valable',
             'h_depart_c.regex' => 'Entrez une heure valable',
             'h_arrivee_b.regex' => 'Entrez une heure valable',

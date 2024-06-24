@@ -28,37 +28,37 @@ class Intervention extends Model
     	'chauffeur_id',
         'status'
     ];
-    protected function casts(): array
-    {
-        return [
-            'date_demande' => 'date',
-            'date_debut' => 'date',
-            'date_fin' => 'date',
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'date_demande' => 'date',
+    //         'date_debut' => 'date',
+    //         'date_fin' => 'date',
 
-        ];
-    }
+    //     ];
+    // }
     public static function getHour($hour){
         return date('H:i', strtotime($hour));
     }
-    public function getDateDebut()
-    {
-        if($this->date_debut!==null){
-        return $this->date_debut->format('d-m-Y');
-    }
-    }
-    public function getDateFin()
-    {
-        if($this->date_fin!==null){
-        return $this->date_fin->format('d-m-Y');
-        }
-    }
-    public function getDateDemande()
-    {
-        if($this->date_demande!==null){
+    // public function getDateDebut()
+    // {
+    //     if($this->date_debut!==null){
+    //     return $this->date_debut->format('d-m-Y');
+    // }
+    // }
+    // public function getDateFin()
+    // {
+    //     if($this->date_fin!==null){
+    //     return $this->date_fin->format('d-m-Y');
+    //     }
+    // }
+    // public function getDateDemande()
+    // {
+    //     if($this->date_demande!==null){
 
-        return $this->date_demande->format('d-m-Y');
-        }
-    }
+    //     return $this->date_demande->format('d-m-Y');
+    //     }
+    // }
 
     public function fait_generateur()
     {

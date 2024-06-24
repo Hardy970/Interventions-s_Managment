@@ -26,9 +26,9 @@
                       <div class="col-xl-12 xl-50 box-col-6"> 
                         <div class="card-body ">
                           <ul class="list-group">
-                              <li class="list-group-item"> <strong>Date de demande :</strong> {{ $intervention->getDateDemande() }}</li>
-                              <li class="list-group-item"><strong>Date de début :</strong> {{ $intervention->getDateDebut() }}</li>
-                              <li class="list-group-item"><strong>Date de fin :</strong> {{ $intervention->getDateFin() }}</li>
+                              <li class="list-group-item"> <strong>Date de demande :</strong> {{ $intervention->date_demande }}</li>
+                              <li class="list-group-item"><strong>Date de début :</strong> {{ $intervention->date_debut }}</li>
+                              <li class="list-group-item"><strong>Date de fin :</strong> {{ $intervention->date_fin }}</li>
                               <li class="list-group-item"><strong>Heure de départ du bureau :</strong> {{ $intervention->h_depart_b }}</li>
                               <li class="list-group-item"><strong>Heure d'arrivée chez le client :</strong> {{ $intervention->h_arrivee_c }}</li>
                               <li class="list-group-item"><strong>Heure de départ chez le client :</strong> {{ $intervention->h_depart_c }}</li>

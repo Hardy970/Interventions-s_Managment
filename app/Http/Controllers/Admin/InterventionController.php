@@ -22,7 +22,7 @@ class InterventionController extends Controller
      */
     public function index()
     {
-        Intervention::first()->getDateDemande();
+        // Intervention::first()->getDateDemande();
         return view('admin.intervention.index',['interventions'=> Intervention::all()]);
     }
 

@@ -44,23 +44,44 @@
       <script src="{{ asset('assets/js/sidebar-menu.js')}}"></script>      
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const option1 = document.getElementById('radioinline1');
-          const option2 = document.getElementById('radioinline2');
-          const block = document.getElementById('blockToToggle');
+    //   document.addEventListener('DOMContentLoaded', function() {
+    //       const option1 = document.getElementById('radioinline1');
+    //       const option2 = document.getElementById('radioinline2');
+    //       const block = document.getElementById('blockToToggle');
   
-          option1.addEventListener('change', function() {
-              if (this.checked) {
-                  block.style.display = 'block';
-              }
-          });
+    //       option1.addEventListener('change', function() {
+    //           if (this.checked) {
+    //               block.style.display = 'block';
+    //           }
+    //       });
   
-          option2.addEventListener('change', function() {
-              if (this.checked) {
-                  block.style.display = 'none';
-              }
-          });
-      });
+    //       option2.addEventListener('change', function() {
+    //           if (this.checked) {
+    //               block.style.display = 'none';
+    //           }
+    //       });
+    //   });
+    document.addEventListener('DOMContentLoaded', function() {
+    const option1 = document.getElementById('radioinline1');
+    const option2 = document.getElementById('radioinline2');
+    const block = document.getElementById('blockToToggle');
+
+    function toggleBlock() {
+        if (option1.checked) {
+            block.style.display = 'block';
+        } else if (option2.checked) {
+            block.style.display = 'none';
+        }
+    }
+
+    // Add event listeners
+    option1.addEventListener('change', toggleBlock);
+    option2.addEventListener('change', toggleBlock);
+
+    // Initialize the state based on the checked radio button
+    toggleBlock();
+});
+
   </script>
   
   <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.js') }}"></script>

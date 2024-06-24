@@ -41,13 +41,13 @@
                           @foreach ( $interventions as $intervention )
                           <tr>
                             <td>
-                              {{ $intervention->getDateDemande() }}
+                              {{ $intervention->date_demande}}
                             </td>
                             <td>
-                              {{ $intervention->getDateDebut() }}
+                              {{ $intervention->date_debut }}
                             </td>
                             <td>
-                              {{ $intervention->getDateFin() }}
+                              {{ $intervention->date_fin }}
                             </td>
                             <td >
                               @foreach ($intervention->typesdemandes as $typedemande )

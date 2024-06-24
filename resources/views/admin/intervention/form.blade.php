@@ -25,7 +25,7 @@
                     <div class=" form-group">
                     <label>Date de demande</label>
                     <div class="input-group">
-                      <input name="date_demande"  autocomplete="off" value="{{ old('date_demande',$intervention->getDateDemande()) }}"   class="datepicker-here form-control digits" type="text" data-language="en">
+                      <input name="date_demande"  autocomplete="off" value="{{ old('date_demande',$intervention->date_demande) }}"   class="datepicker-here form-control digits" type="text" data-language="en">
                     </div>
                     @error('date_demande')
                     <div>
@@ -41,7 +41,7 @@
                         <select name="fait_generateur_id" id="" class="js-example-basic-single " data-placeholder="Choisir un fait générateur" >
                           <option value="">Choisir un fait générateur</option>
                           @foreach ($faitsgenerateurs as $faitgenerateur)
-                              <option value="{{ $faitgenerateur->id }}" @selected($faitgenerateur->id==$intervention->fait_generateur_id)>{{ $faitgenerateur->libelle }}</option>
+                              <option value="{{ $faitgenerateur->id }}" @selected($faitgenerateur->id == old('fait_generateur_id', $intervention->fait_generateur_id))>{{ $faitgenerateur->libelle }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -63,7 +63,7 @@
                       <div class="">
                         <select name="typesdemandes[]" multiple id="" class="js-example-placeholder-multiple " data-placeholder="Choisir le ou les types de demande" >
                           @foreach ($typesdemandes as $typedemande)
-                              <option value="{{ $typedemande->id }}" @selected($intervention->typesdemandes->contains($typedemande))>{{ $typedemande->libelle }}</option>
+                              <option value="{{ $typedemande->id }}" @selected(in_array($typedemande->id, old('typesdemandes', $intervention->typesdemandes->pluck('id')->toArray()))) >{{ $typedemande->libelle }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -81,7 +81,7 @@
                         <select name="demandeur_id" id="" class="js-example-basic-single " >
                           <option value="">Choisir un demandeur</option>
                           @foreach ($demandeurs as $demandeur)
-                              <option value="{{ $demandeur->id }}" @selected($demandeur->id==$intervention->demandeur_id)>{{ $demandeur->nom }}</option>
+                              <option value="{{ $demandeur->id }}" @selected($demandeur->id== old('demandeur_id', $intervention->demandeur_id))>{{ $demandeur->nom }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -115,7 +115,7 @@
                       <div class="input-group">
                         <select name="consultants[]" multiple id=""  class="js-example-placeholder-multiple " data-placeholder="Choisir le ou les consultants" >
                           @foreach ($consultants as $consultant)
-                              <option value="{{ $consultant->id }}" @selected($intervention->consultants->contains($consultant))>{{ $consultant->last_name }} {{ $consultant->first_name }}</option>
+                              <option value="{{ $consultant->id }}" @selected(in_array($consultant->id, old('consultants', $intervention->consultants->pluck('id')->toArray())))>{{ $consultant->last_name }} {{ $consultant->first_name }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -132,7 +132,7 @@
                       <div class="input-group">
                         <select name="typesinterventions[]" id="" multiple class="js-example-placeholder-multiple " data-placeholder="Choisir le ou les types d'intervention">
                           @foreach ($typesinterventions as $typeintervention)
-                              <option value="{{ $typeintervention->id }}" @selected($intervention->typesinterventions->contains($typeintervention))>{{ $typeintervention->libelle }}</option>
+                              <option value="{{ $typeintervention->id }}" @selected(in_array($typeintervention->id, old('typesinterventions', $intervention->typesinterventions->pluck('id')->toArray())))>{{ $typeintervention->libelle }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -153,7 +153,7 @@
                       <div class="input-group">
                         <select name="produits[]" multiple id="" class="js-example-placeholder-multiple " data-placeholder="Séléctionner les produits " >
                           @foreach ($produits as $produit)
-                              <option value="{{ $produit->id }}" @selected($intervention->produits->contains($produit))>{{ $produit->libelle }}</option>
+                              <option value="{{ $produit->id }}" @selected(in_array($produit->id, old('produits', $intervention->produits->pluck('id')->toArray())))>{{ $produit->libelle }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -171,9 +171,8 @@
                       </div>
                       <div class="form-group m-checkbox-inline mb-0 custom-radio-ml">
                         <div class="radio radio-primary">
+                          <input id="radioinline1" type="radio" name="est_vehicule_service" value="1" {{ @old('est_vehicule_service',$intervention->est_vehicule_service)=='1'? 'checked':'' }}>
                           <label class="mb-0" for="radioinline1">Véhicule de service</label>
-                          <input id="radioinline1" class="toggleBlock" type="radio" name="est_vehicule_service" value="1" {{ @old('est_vehicule_service',$intervention->est_vehicule_service)=='1'? 'checked':'' }}>
-
                         </div>
                         <div class="radio radio-primary">
                           <input id="radioinline2" type="radio" name="est_vehicule_service" value="0" {{ @old('est_vehicule_service',$intervention->est_vehicule_service)=='0'? 'checked':'' }}>
@@ -216,7 +215,7 @@
                         <select name="chauffeur_id" id="" class="js-example-basic-single" >
                           <option value="">Choisir un chauffeur</option>
                           @foreach ($chauffeurs as $chauffeur)
-                              <option value="{{ $chauffeur->id }}" @selected($intervention->chauffeur_id==$chauffeur->id)>{{ $chauffeur->nom }}</option>
+                              <option value="{{ $chauffeur->id }}" @selected($chauffeur->id == old('chauffeur_id', $intervention->chauffeur_id))>{{ $chauffeur->nom }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -292,7 +291,7 @@
                     <div class=" form-group">
                       <label>Date de début :</label>
                       <div class="input-group">
-                        <input name="date_debut" value="{{ old('date_debut',$intervention->getDateDebut()) }}" autocomplete="off" class="datepicker-here form-control digits" type="text" data-language="en">
+                        <input name="date_debut" value="{{ old('date_debut',$intervention->date_debut) }}" autocomplete="off" class="datepicker-here form-control digits" type="text" data-language="en">
                       </div>
                       @error('date_debut')
                       <div>
@@ -306,7 +305,7 @@
                     <div class=" form-group">
                       <label>Date de fin :</label>
                       <div class="input-group">
-                        <input name="date_fin" autocomplete="off" value="{{ old('date_fin',$intervention->getDateFin()) }}" class="datepicker-here form-control digits" type="text" data-language="en">
+                        <input name="date_fin" autocomplete="off" value="{{ old('date_fin',$intervention->date_fin) }}" class="datepicker-here form-control digits" type="text" data-language="en">
                       </div>
                       @error('date_fin')
                       <div>

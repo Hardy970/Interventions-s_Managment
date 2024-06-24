@@ -18,9 +18,9 @@ return new class extends Migration
         Schema::create('interventions', function (Blueprint $table) {
             $table->id();
             $table->string('feedback')->nullable();
-            $table->date('date_demande');
-            $table->date('date_debut');
-            $table->date('date_fin')->nullable();
+            $table->string('date_demande');
+            $table->string('date_debut');
+            $table->string('date_fin')->nullable();
             $table->time('h_depart_b');
             $table->time('h_arrivee_b');
             $table->time('h_arrivee_c')->nullable();
