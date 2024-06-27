@@ -25,7 +25,7 @@
             @php
               $route=request() -> route() -> getName();
             @endphp
-            
+            @if(Auth::user()->role->libelle=='admin')
             <li class="dropdown"><a  @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'dashboard')]) href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span>Tableau de bord</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'interventions')]) href="{{ route('admin.interventions.index') }}"><span>Interventions</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'consultant')]) href="{{ route('admin.consultant.index') }}"><span>Consultants</span></a></li>
@@ -40,6 +40,9 @@
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'typeintervention')]) href="{{ route('admin.typeintervention.index') }}"><span>Types d'intervention</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'vehicule')]) href="{{ route('admin.vehicule.index') }}"><span>Véhicules</span></a></li>
             <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'role')]) href="{{ route('admin.role.index') }}"><span>Rôles</span></a></li>
+            @else
+            <li class="dropdown"><a @class(['nav-link menu-title link-nav','active'=>Str::contains($route, 'interventions')]) href="{{ route('admin.interventions.index') }}"><span>Interventions</span></a></li>
+            @endif
 
 
 

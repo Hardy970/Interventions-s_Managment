@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Produit;
+use App\Models\Vehicule;
+use App\Models\Chauffeur;
 use App\Models\Demandeur;
 use App\Models\TypeDemande;
 use App\Models\Intervention;
@@ -12,8 +15,9 @@ use App\Models\FaitGenerateur;
 use App\Models\TypeIntervention;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InterventionRequest;
-use App\Models\Chauffeur;
-use App\Models\Vehicule;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewInterventionAdminNotification;
+use App\Notifications\NewInterventionDemandeurNotification;
 
 class InterventionController extends Controller
 {
@@ -44,6 +48,18 @@ class InterventionController extends Controller
         $intervention->produits()->sync($request->validated('produits'));
         $intervention->consultants()->sync($request->validated('consultants'));
         $intervention->typesinterventions()->sync($request->validated('typesinterventions'));
+         // Récupérer dynamiquement l'ID du rôle administrateur
+         $adminRoleId = Role::where('libelle', 'admin')->first()->id;
+
+         // Récupérer tous les utilisateurs ayant le rôle administrateur
+         $administrators = User::where('role_id', $adminRoleId)->get();
+ 
+         // Envoyer une notification aux administrateurs
+         Notification::send($administrators, new NewInterventionAdminNotification($intervention));
+
+        // Envoyer une notification au demandeur
+        $demandeur = $intervention->demandeur;
+        $demandeur->notify(new NewInterventionDemandeurNotification($intervention));
         return redirect()->route('admin.interventions.index')->with('success','Intervention créee avec succès');
     }
 
@@ -73,6 +89,15 @@ class InterventionController extends Controller
         $intervention->produits()->sync($request->validated('produits'));
         $intervention->consultants()->sync($request->validated('consultants'));
         $intervention->typesinterventions()->sync($request->validated('typesinterventions'));
+
+        // Envoyer une notification aux administrateurs
+        $administrators = User::where('role', 'admin')->get();
+        Notification::send($administrators, new NewInterventionAdminNotification($intervention));
+
+        // Envoyer une notification au demandeur
+        $demandeur = $intervention->demandeur;
+        $demandeur->notify(new NewInterventionDemandeurNotification($intervention));
+
         return to_route('admin.interventions.index')->with('success','Intervention mise à jour avec succès');
     }
 

@@ -39,6 +39,12 @@ class AuthenticatedSessionController extends Controller
                     'email' =>"Compte désactivé",
                 ]);
             }
+    //         if(Auth::user()->role->libelle=='admin'){
+    //     return redirect()->intended(route('admin.dashboard', absolute: false));
+    // }
+    //         else{
+    //             return redirect()->intended(route('admin.interventions', absolute: false));
+    //         }
 
         return redirect()->intended(route('admin.dashboard', absolute: false));
     }

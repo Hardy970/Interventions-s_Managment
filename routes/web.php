@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\TypeIntervention;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\EquipeController;
 use App\Http\Controllers\Admin\ProduitController;
@@ -19,8 +21,14 @@ use App\Http\Controllers\Admin\FaitGenerateurController;
 use App\Http\Controllers\Admin\TypeInterventionController;
 
 Route::get('/', function () {
-    return to_route('admin.dashboard');
+        return to_route('admin.dashboard');
 })->middleware('auth');
+
+Route::get('/feedback/{intervention}', [FeedbackController::class, 'show'])->name('feedback.form')->middleware('signed');
+Route::post('/feedback/{intervention}', [FeedbackController::class, 'submit'])->name('feedback.submit');
+
+Route::get('/thankyou', [FeedbackController::class, 'thankyou'])
+    ->name('feedback.thankyou');
 
 Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function(){
     Route::get('dashboard',[DashboardController::class, 'index'])->name('dashboard');
